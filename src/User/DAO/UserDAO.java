@@ -3,19 +3,17 @@ package User.DAO;
 import Database.ConnectDB;
 import User.Owner;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserDAO {
     public Boolean loginUser(ConnectDB conDB, Owner owner){
         try{
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            Statement checkLogin = con.createStatement();
-            String sql = "select idOwner from Owner where login = '"+owner.getLogin()+"' and password ='"+owner.getPassword()+"';";
-            System.out.println("SQL: "+sql);
-            ResultSet dbResponse = checkLogin.executeQuery(sql);
+            String sql = "select idOwner from Owner where login=? and password=?";
+            PreparedStatement preparedSt = con.prepareStatement(sql);
+            preparedSt.setString(1, owner.getLogin());
+            preparedSt.setString(2, owner.getPassword());
+            ResultSet dbResponse = preparedSt.executeQuery();
             if(dbResponse.next()){
                 return true;
             }
