@@ -4,9 +4,9 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class MYSQLConnection implements ConnectDB{
-String server = "localhost:3307";
-String schema = "refuel";
+public class MYSQLConnection implements ConnectDB {
+    String server = "localhost:3307";
+    String schema = "refuel";
 
     public String getServer() {
         return server;
@@ -29,7 +29,7 @@ String schema = "refuel";
         }
     }
 
-    private boolean CloseConnection(Connection connection) {
+    public boolean CloseConnection(Connection connection) {
         try {
             connection.close();
             return true;

@@ -1,5 +1,5 @@
 package User;
 
-public class Passenger extends Person{
+public class Passenger extends Person {
     String seat;
 }

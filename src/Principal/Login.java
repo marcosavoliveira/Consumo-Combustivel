@@ -16,6 +16,7 @@ public class Login {
     private JTextField textField1;
     private JPanel panel1;
     Owner owner = new Owner();
+
     public Login(JFrame fillFile, int frameWidth, int frameHeight) {
 
         fillFile.setSize(frameWidth, frameHeight);
@@ -32,13 +33,14 @@ public class Login {
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
-            if(new LoginCTR().checkSignIn(owner)){
-                JOptionPane.showMessageDialog(null,"Got it");
-            }else{
-                JOptionPane.showMessageDialog(null,"Don't get it");
+            if (new LoginCTR().checkSignIn(owner)) {
+                JOptionPane.showMessageDialog(null, "Got it");
+            } else {
+                JOptionPane.showMessageDialog(null, "Don't get it");
             }
         });
     }
+
     public static void main(String[] Args) {
         JFrame Login = new JFrame("Consumo Combustivel");
         Utils.frameMethods frameMethods = new frameMethods();

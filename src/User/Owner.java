@@ -3,7 +3,7 @@ package User;
 import EncryptClasses.EncryptMethods;
 import EncryptClasses.SHA256;
 
-public class Owner extends Person{
+public class Owner extends Person {
     String driverLicense;
     String login;
     String password;

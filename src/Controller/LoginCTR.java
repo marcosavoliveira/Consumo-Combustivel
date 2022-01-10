@@ -1,15 +1,12 @@
 package Controller;
 
-        import Database.ConnectDB;
-        import Database.MYSQLConnection;
-        import User.DAO.UserDAO;
-        import User.Owner;
-
-        import java.sql.Connection;
+import Database.MYSQLConnection;
+import User.DAO.UserDAO;
+import User.Owner;
 
 public class LoginCTR {
-    public boolean checkSignIn(Owner owner){
+    public boolean checkSignIn(Owner owner) {
         UserDAO user = new UserDAO();
-        return user.loginUser(new MYSQLConnection(), owner);
+        return user.signInUser(new MYSQLConnection(), owner);
     }
 }
