@@ -1,6 +1,7 @@
 package User;
 
 import EncryptClasses.EncryptMethods;
+import EncryptClasses.SHA256;
 
 public class Owner extends Person{
     String driverLicense;
@@ -28,6 +29,6 @@ public class Owner extends Person{
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        this.password = new SHA256().encrypt(password);
     }
 }

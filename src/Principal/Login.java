@@ -1,9 +1,6 @@
 package Principal;
 
-import Database.ConnectDB;
-import Database.MYSQLConnection;
-import EncryptClasses.MD5;
-import EncryptClasses.SHA256;
+import Controller.LoginCTR;
 import User.Owner;
 import Utils.frameMethods;
 
@@ -34,9 +31,11 @@ public class Login {
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText());
             owner.setPassword(String.valueOf(passwordField1.getPassword()));
-            System.out.println(new SHA256().encrypt(owner.getPassword()));
-            System.out.println(new MD5().encrypt(owner.getPassword()));
-            System.out.println(new MYSQLConnection().getConnection("localhost:3307","refuel"));
+            if(new LoginCTR().checkSignIn(owner)){
+                JOptionPane.showMessageDialog(null,"Got it");
+            }else{
+                JOptionPane.showMessageDialog(null,"Don't get it");
+            }
         });
     }
     public static void main(String[] Args) {
