@@ -5,4 +5,6 @@ import java.sql.SQLException;
 
 public interface ConnectDB {
     java.sql.Connection getConnection(String serverName, String database);
+    String getServer();
+    String getSchema();
 }

@@ -28,7 +28,7 @@ public class Owner extends Person{
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = new SHA256().encrypt(password);
+    public void setPassword(String password, EncryptMethods encrypt) {
+        this.password = encrypt.encrypt(password);
     }
 }

@@ -1,6 +1,7 @@
 package Principal;
 
 import Controller.LoginCTR;
+import EncryptClasses.SHA256;
 import User.Owner;
 import Utils.frameMethods;
 
@@ -30,7 +31,7 @@ public class Login {
         });
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText());
-            owner.setPassword(String.valueOf(passwordField1.getPassword()));
+            owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
             if(new LoginCTR().checkSignIn(owner)){
                 JOptionPane.showMessageDialog(null,"Got it");
             }else{

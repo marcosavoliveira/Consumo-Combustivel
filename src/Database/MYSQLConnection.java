@@ -5,6 +5,16 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class MYSQLConnection implements ConnectDB{
+String server = "localhost:3307";
+String schema = "refuel";
+
+    public String getServer() {
+        return server;
+    }
+
+    public String getSchema() {
+        return schema;
+    }
 
     public java.sql.Connection getConnection(String serverName, String database) {
         Connection connection;
