@@ -1,12 +1,12 @@
 package User;
 
 import EncryptClasses.EncryptMethods;
-import EncryptClasses.SHA256;
 
 public class Owner extends Person {
     String driverLicense;
     String login;
     String password;
+    Integer id;
 
     public String getDriverLicense() {
         return driverLicense;
@@ -26,6 +26,10 @@ public class Owner extends Person {
 
     public String getPassword() {
         return password;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public void setPassword(String password, EncryptMethods encrypt) {
