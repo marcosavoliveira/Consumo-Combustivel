@@ -15,17 +15,18 @@ public class Login {
     private JTextField textField1;
     private JPanel panel1;
     Owner owner = new Owner();
-
+    public static JFrame login;
     public Login() {
 
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
             if (new LoginCTR().checkSignIn(owner)) {
-
+                login.setVisible(false);
                 JFrame main = new JFrame(LOGIN_FRAME_TITLE);
                 Main mainFrame = new Main();
                 mainFrame.setFrame(main);
+
             } else {
                 JOptionPane.showMessageDialog(null, "Falha na autenticação","Error",JOptionPane.ERROR_MESSAGE);
             }
@@ -33,7 +34,7 @@ public class Login {
     }
 
     public static void main(String[] Args) {
-        JFrame login = new JFrame(MAIN_FRAME_TITLE);
+        login = new JFrame(MAIN_FRAME_TITLE);
         Utils.frameMethods frameMethods = new frameMethods();
         frameMethods.setterParamsFrame(login);
         frameMethods.defineCloseMethod(login);

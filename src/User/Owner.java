@@ -28,11 +28,15 @@ public class Owner extends Person {
         return password;
     }
 
+    public void setPassword(String password, EncryptMethods encrypt) {
+        this.password = encrypt.encrypt(password);
+    }
+
     public Integer getId() {
         return id;
     }
 
-    public void setPassword(String password, EncryptMethods encrypt) {
-        this.password = encrypt.encrypt(password);
+    public void setId(Integer id) {
+        this.id = id;
     }
 }
