@@ -1,7 +1,6 @@
 package User.Permission.CTR;
 
 import Database.MYSQLConnection;
-import User.DAO.UserDAO;
 import User.Owner;
 import User.Permission.DAO.PermissionDAO;
 
@@ -18,4 +17,15 @@ public class PermissionCTR {
         }
         return permissionListModel;
     }
+
+    public Boolean deletePermission(Owner owner){
+        PermissionDAO permission = new PermissionDAO();
+        return permission.deletePermission(new MYSQLConnection(), owner);
+    }
+
+    public Boolean savePermission(Owner owner){
+        PermissionDAO permission = new PermissionDAO();
+        return permission.savePermission(new MYSQLConnection(), owner);
+    }
 }
+

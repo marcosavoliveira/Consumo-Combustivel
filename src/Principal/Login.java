@@ -19,7 +19,7 @@ public class Login {
     public Login() {
 
         loginButton.addActionListener(e -> {
-            owner.setLogin(textField1.getText());
+            owner.setLogin(textField1.getText().toUpperCase());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
             if (new LoginCTR().checkSignIn(owner)) {
                 login.setVisible(false);

@@ -25,11 +25,17 @@ public class ownerCTR {
         owner.setId(id);
         return owner;
     }
+
     public String getOwnerLogin(String ownerComboValue) {
         String login="";
         if(ownerComboValue != "Selecione o condutor"){
             login = ownerComboValue.substring(0,ownerComboValue.indexOf('(')-1);
         }
         return login;
+    }
+
+    public Boolean saveOwner(Owner owner) {
+        UserDAO user = new UserDAO();
+        return user.saveOwner(new MYSQLConnection(), owner);
     }
 }

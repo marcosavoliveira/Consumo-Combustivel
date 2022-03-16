@@ -1,5 +1,6 @@
 package Principal;
 
+import EncryptClasses.SHA256;
 import User.CTR.ownerCTR;
 import User.Owner;
 import User.Permission.CTR.PermissionCTR;
@@ -15,22 +16,21 @@ public class Main {
     public JPanel panel1;
     private JTabbedPane CalcPanel;
     private JTabbedPane tabbedPane2;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-    private JTextField textField2;
-    private JButton salvarButton1;
-    private JList list1;
-    private JList list2;
-    private JButton button2;
-    private JButton button3;
-    private JButton button4;
-    private JComboBox comboBox1;
+    private JTextField textFieldLogin;
+    private JPasswordField passwordFieldSenha;
+    private JTextField textFieldCNH;
+    private JButton buttonSalvarOwner;
+    private JList listSistemAction;
+    private JList listPermissions;
+    private JButton buttonAddPermission;
+    private JComboBox comboBoxOwner;
     private JPanel permissionPanel;
     private JPanel driverPanel;
     private JPanel VehiclePanel;
     private JPanel MaintencePanel;
     private JPanel RegisterPanel;
-    private JButton salvarButton;
+    private JTextField textFieldNome;
+    private JButton buttonRemovePermission;
 
     public Main() {
 
@@ -38,16 +38,52 @@ public class Main {
             @Override
             public void stateChanged(ChangeEvent e) {
                 if(tabbedPane2.getSelectedIndex()==1){
-                    comboBox1.setModel(new ownerCTR().getOwnersList());
+                    comboBoxOwner.setModel(new ownerCTR().getOwnersList());
                 }
             }
         });
-        comboBox1.addActionListener(new ActionListener() {
+        comboBoxOwner.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Owner owner = new Owner();
-                owner.setLogin(new ownerCTR().getOwnerLogin(comboBox1.getSelectedItem().toString()));
-                list2.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner)));
+                owner.setLogin(new ownerCTR().getOwnerLogin(comboBoxOwner.getSelectedItem().toString()));
+                listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner)));
+            }
+        });
+        buttonSalvarOwner.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Owner owner = new Owner();
+                owner.setName(textFieldNome.getText());
+                owner.setDriverLicense(textFieldCNH.getText());
+                owner.setLogin(textFieldLogin.getText().toUpperCase());
+                owner.setPassword(String.valueOf(passwordFieldSenha.getPassword()), new SHA256());
+                if(new ownerCTR().saveOwner(owner)){
+                    JOptionPane.showMessageDialog(null, "Condutor Salvo com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Falha ao Salvar Condutor","Error",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        buttonAddPermission.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Owner owner = new Owner();
+                owner.setName(textFieldNome.getText());
+                owner.setDriverLicense(textFieldCNH.getText());
+                owner.setLogin(textFieldLogin.getText().toUpperCase());
+                owner.setPassword(String.valueOf(passwordFieldSenha.getPassword()), new SHA256());
+                if(new ownerCTR().saveOwner(owner)){
+                    JOptionPane.showMessageDialog(null, "Condutor Salvo com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Falha ao Salvar Condutor","Error",JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+        buttonRemovePermission.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
     }

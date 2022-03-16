@@ -6,7 +6,16 @@ public class Owner extends Person {
     String driverLicense;
     String login;
     String password;
+    String name;
     Integer id;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getDriverLicense() {
         return driverLicense;
@@ -40,3 +49,4 @@ public class Owner extends Person {
         this.id = id;
     }
 }
+

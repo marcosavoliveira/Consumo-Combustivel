@@ -1,6 +1,7 @@
 package User.DAO;
 
 import Database.ConnectDB;
+import Database.MYSQLConnection;
 import User.Owner;
 
 import java.sql.*;
@@ -65,4 +66,27 @@ public class UserDAO {
             return id;
         }
     }
+
+    public Boolean saveOwner(ConnectDB conDB, Owner owner) {
+        Boolean status = true;
+            try {
+                Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
+                String sql = "INSERT INTO `refuel`.`owner`\n" +
+                        "(`Login`,`Password`,`DriverLicense`,`Name`)\n" +
+                        "VALUES\n" +
+                        "(?,?,?,?)";
+                PreparedStatement preparedSt = con.prepareStatement(sql);
+                preparedSt.setString(1, owner.getLogin());
+                preparedSt.setString(2, owner.getPassword());
+                preparedSt.setString(3, owner.getDriverLicense());
+                preparedSt.setString(4, owner.getName());
+                preparedSt.execute();
+                preparedSt.close();
+                conDB.CloseConnection(con);
+                return status;
+            } catch (SQLException exception) {
+                System.err.println(exception.getMessage());
+                return false;
+            }
+        }
 }
