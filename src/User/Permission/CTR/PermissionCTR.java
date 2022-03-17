@@ -3,6 +3,7 @@ package User.Permission.CTR;
 import Database.MYSQLConnection;
 import User.Owner;
 import User.Permission.DAO.PermissionDAO;
+import User.Permission.Permission;
 
 import javax.swing.*;
 import java.util.List;
@@ -18,14 +19,35 @@ public class PermissionCTR {
         return permissionListModel;
     }
 
-    public Boolean deletePermission(Owner owner){
-        PermissionDAO permission = new PermissionDAO();
-        return permission.deletePermission(new MYSQLConnection(), owner);
+    public DefaultListModel getSistemActionList() {
+        PermissionDAO sistemActions = new PermissionDAO();
+        List<String> actionList=sistemActions.loadSistemActions(new MYSQLConnection());
+        DefaultListModel actionListModel = new DefaultListModel();
+        for (String item: actionList) {
+            actionListModel.addElement(item);
+        }
+        return actionListModel;
     }
 
-    public Boolean savePermission(Owner owner){
-        PermissionDAO permission = new PermissionDAO();
-        return permission.savePermission(new MYSQLConnection(), owner);
+    public Boolean existsPermission(Owner owner, Permission permission){
+        PermissionDAO permissionDAO = new PermissionDAO();
+        return permissionDAO.existsPermission(new MYSQLConnection(), owner,permission);
+    }
+
+    public Boolean deletePermission(Owner owner, Permission permission){
+        PermissionDAO permissionDAO = new PermissionDAO();
+        return permissionDAO.deletePermission(new MYSQLConnection(), owner,permission);
+    }
+
+    public Boolean savePermission(Owner owner, Permission permission){
+        PermissionDAO permissionDAO = new PermissionDAO();
+        return permissionDAO.savePermission(new MYSQLConnection(), owner,permission);
+    }
+
+    public Permission getActionId(Permission permission) {
+        PermissionDAO permissionDAO = new PermissionDAO();
+        permission.setIdSistemAction(permissionDAO.getActionId(new MYSQLConnection(), permission));
+        return permission;
     }
 }
 
