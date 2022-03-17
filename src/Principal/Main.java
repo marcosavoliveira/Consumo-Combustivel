@@ -6,6 +6,7 @@ import User.Owner;
 import User.Permission.CTR.PermissionCTR;
 import User.Permission.Permission;
 import Utils.frameMethods;
+import Vehicle.Vehicle;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -32,11 +33,10 @@ public class Main {
     private JPanel RegisterPanel;
     private JTextField textFieldNome;
     private JButton buttonRemovePermission;
-    private JTextField textField1;
-    private JTextField textField2;
-    private JTextField textField3;
+    private JTextField textFieldModel;
+    private JTextField textFieldPlate;
     private JButton salvarButton;
-    private JSpinner spinner1;
+    private JSpinner spinnerNumberSeats;
     private JComboBox comboBox1;
     private JFormattedTextField formattedTextField1;
     private JFormattedTextField formattedTextField2;
@@ -46,6 +46,7 @@ public class Main {
     private JComboBox comboBox2;
     private JSpinner spinner2;
     private JButton calcularButton;
+    private JSpinner spinnerYear;
 
     public Main() {
 
@@ -119,6 +120,17 @@ public class Main {
                         JOptionPane.showMessageDialog(null, "Falha ao Excluir Permissão","Error",JOptionPane.ERROR_MESSAGE);
                     }
                 }
+            }
+        });
+        salvarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vehicle vehicle = new Vehicle();
+                vehicle.setIdOwner(1);
+                vehicle.setModel(textFieldModel.getText());
+                vehicle.setLicensePlate(textFieldPlate.getText());
+                vehicle.setYear(Integer.parseInt((String) spinnerYear.getValue()));
+                vehicle.setNumberSeats(Integer.parseInt((String) spinnerNumberSeats.getValue()));
             }
         });
     }
