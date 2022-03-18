@@ -1,4 +1,4 @@
-package Vehicle.Refuel.DAO;
+package DAO;
 
 public class RefuelDAO {
 }

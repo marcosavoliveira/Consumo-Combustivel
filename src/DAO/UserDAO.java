@@ -1,4 +1,4 @@
-package User.DAO;
+package DAO;
 
 import Database.ConnectDB;
 import Database.MYSQLConnection;
@@ -9,23 +9,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-    public Boolean signInUser(ConnectDB conDB, Owner owner) {
+    public Owner signInUser(ConnectDB conDB, Owner owner) {
+        owner.setId(0);
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "select idOwner from Owner where login=? and password=?";
+            String sql = "select idOwner, Name from Owner where login=? and password=?";
             PreparedStatement preparedSt = con.prepareStatement(sql);
             preparedSt.setString(1, owner.getLogin());
             preparedSt.setString(2, owner.getPassword());
             ResultSet dbResponse = preparedSt.executeQuery();
             if (dbResponse.next()) {
-                return true;
+                owner.setId(dbResponse.getInt(1));
+                owner.setName(dbResponse.getString(2));
             }
             conDB.CloseConnection(con);
+            return  owner;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
-            return false;
+            owner.setId(-1);
+            return owner;
         }
-        return false;
     }
 
     public List<String> listOwner(ConnectDB conDB) {

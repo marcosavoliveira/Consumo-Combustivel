@@ -1,4 +1,4 @@
-package User.Permission.DAO;
+package DAO;
 
 import Database.ConnectDB;
 import Database.MYSQLConnection;

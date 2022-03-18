@@ -1,13 +1,11 @@
-package User.CTR;
+package Controller;
 
 import Database.MYSQLConnection;
-import User.DAO.UserDAO;
+import DAO.UserDAO;
 import User.Owner;
-import com.sun.org.apache.xpath.internal.objects.XString;
 
 import javax.swing.*;
 import java.util.List;
-import java.util.Map;
 
 public class ownerCTR {
     public DefaultComboBoxModel getOwnersList() {

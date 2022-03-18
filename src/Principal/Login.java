@@ -21,11 +21,11 @@ public class Login {
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText().toUpperCase());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
-            if (new LoginCTR().checkSignIn(owner)) {
+            if (new LoginCTR().checkSignIn(owner).getId()>0) {
                 login.setVisible(false);
                 JFrame main = new JFrame(LOGIN_FRAME_TITLE);
-                Main mainFrame = new Main();
-                mainFrame.setFrame(main);
+                Main mainFrame = new Main(owner);
+                mainFrame.setFrame(main,owner);
 
             } else {
                 JOptionPane.showMessageDialog(null, "Falha na autenticação","Error",JOptionPane.ERROR_MESSAGE);

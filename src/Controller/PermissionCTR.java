@@ -1,8 +1,8 @@
-package User.Permission.CTR;
+package Controller;
 
 import Database.MYSQLConnection;
 import User.Owner;
-import User.Permission.DAO.PermissionDAO;
+import DAO.PermissionDAO;
 import User.Permission.Permission;
 
 import javax.swing.*;
