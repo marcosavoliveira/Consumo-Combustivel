@@ -17,7 +17,8 @@ public class PopulatedVehicleTable{
         tableModel = (DefaultTableModel) table1.getModel();
         int maxRows = tableModel.getRowCount();
         for(int i=0;i<maxRows;i++){
-            tableModel.removeRow(i);
+            System.err.println("MAX: "+maxRows+" - "+i);
+            tableModel.removeRow(0);
         }
         if(vehicleByOwner.size()>0 ){
             for(Vehicle item:vehicleByOwner){

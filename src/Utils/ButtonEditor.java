@@ -17,7 +17,7 @@ public class ButtonEditor extends DefaultCellEditor
     int idLogged;
     public ButtonEditor(JTextField txt, int idLogged) {
         super(txt);
-        idLogged = this.idLogged;
+        this.idLogged = idLogged;
         btn=new JButton();
         btn.setOpaque(true);
 
