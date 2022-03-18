@@ -1,4 +1,4 @@
-package Vehicle.Maintence.DAO;
+package DAO;
 
 public class MaintenanceDAO {
 }

@@ -6,6 +6,7 @@ public class Vehicle {
     String model;
     int year;
     int numberSeats;
+    int id;
     int idOwner;
 
     public int getIdOwner() {
@@ -14,6 +15,15 @@ public class Vehicle {
 
     public void setIdOwner(int idOwner) {
         this.idOwner = idOwner;
+    }
+
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getLicensePlate() {

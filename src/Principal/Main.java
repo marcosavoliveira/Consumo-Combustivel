@@ -1,18 +1,25 @@
 package Principal;
 
+import Controller.vehicleCTR;
 import EncryptClasses.SHA256;
-import User.CTR.ownerCTR;
+import Controller.ownerCTR;
 import User.Owner;
-import User.Permission.CTR.PermissionCTR;
+import Controller.PermissionCTR;
 import User.Permission.Permission;
+import Utils.ButtonEditor;
+import Utils.ButtonRenderer;
+import Utils.PopulatedVehicleTable;
 import Utils.frameMethods;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class Main {
     public JPanel panel1;
@@ -23,7 +30,7 @@ public class Main {
     private JTextField textFieldCNH;
     private JButton buttonSalvarOwner;
     private JList listSistemAction;
-    private JList listPermissions;
+    protected JList listPermissions;
     private JButton buttonAddPermission;
     private JComboBox comboBoxOwner;
     private JPanel permissionPanel;
@@ -47,15 +54,32 @@ public class Main {
     private JSpinner spinner2;
     private JButton calcularButton;
     private JSpinner spinnerYear;
+    private JLabel labelWelcome;
+    private JTable table1;
+    public Main(Owner owner) {
+        final int idLogged = owner.getId();
+        final String[] columnNames = {"ID","Modelo","Placa","Ano Fabricação","Assentos","Remover"};
+        TableModel model = new DefaultTableModel(columnNames, 0);
+        table1.setName("Vehicle");
+        table1.setModel(model);
+        table1.getColumn("Remover").setCellRenderer(new ButtonRenderer());
+        table1.getColumn("Remover").setCellEditor(new ButtonEditor(new JTextField(),idLogged));
+        table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        table1.getColumnModel().getColumn(0).setMinWidth(0);
+        table1.getColumnModel().getColumn(0).setMaxWidth(0);
+        table1.getColumnModel().getColumn(0).setWidth(0);
 
-    public Main() {
-
+        labelWelcome.setText(labelWelcome.getText()+' '+owner.getName());
         tabbedPane2.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
+                System.out.println(tabbedPane2.getSelectedComponent());
                 if(tabbedPane2.getSelectedIndex()==1){
                     comboBoxOwner.setModel(new ownerCTR().getOwnersList());
                     listSistemAction.setModel(new PermissionCTR().getSistemActionList());
+                }
+                if(tabbedPane2.getSelectedIndex()==2){
+                    table1.setModel(new PopulatedVehicleTable().populate(idLogged,table1));
                 }
             }
         });
@@ -126,20 +150,26 @@ public class Main {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Vehicle vehicle = new Vehicle();
-                vehicle.setIdOwner(1);
+                vehicle.setIdOwner(idLogged);
                 vehicle.setModel(textFieldModel.getText());
                 vehicle.setLicensePlate(textFieldPlate.getText());
-                vehicle.setYear(Integer.parseInt((String) spinnerYear.getValue()));
-                vehicle.setNumberSeats(Integer.parseInt((String) spinnerNumberSeats.getValue()));
+                vehicle.setYear(Integer.parseInt(spinnerYear.getValue().toString()));
+                vehicle.setNumberSeats(Integer.parseInt(spinnerNumberSeats.getValue().toString()));
+                if(new vehicleCTR().saveVehile(vehicle)){
+                    JOptionPane.showMessageDialog(null, "Veículo Cadastrado com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
+                    table1.setModel(new PopulatedVehicleTable().populate(idLogged,table1));
+                }else{
+                    JOptionPane.showMessageDialog(null, "Falha ao Cadastrar Veículo","Error",JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
     }
 
-    public void setFrame(JFrame frame) {
+    public void setFrame(JFrame frame, Owner owner) {
         Utils.frameMethods frameMethods = new frameMethods();
         frameMethods.setterParamsFrame(frame);
         frameMethods.defineCloseMethod(frame);
-        frame.setContentPane(new Main().panel1);
+        frame.setContentPane(new Main(owner).panel1);
         frame.pack();
     }
 }
