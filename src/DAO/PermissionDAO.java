@@ -1,7 +1,6 @@
 package DAO;
 
 import Database.ConnectDB;
-import Database.MYSQLConnection;
 import User.Owner;
 import User.Permission.Permission;
 
@@ -65,7 +64,6 @@ public class PermissionDAO {
                 status = true;
             }
             conDB.CloseConnection(con);
-            System.out.println("Teste se Existe: "+status);
             return status;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());

@@ -1,5 +1,6 @@
 package Principal;
 
+import Controller.vehicleCTR;
 import EncryptClasses.SHA256;
 import Controller.ownerCTR;
 import User.Owner;
@@ -9,17 +10,23 @@ import Utils.TableFuncions.ButtonEditor;
 import Utils.TableFuncions.ButtonRenderer;
 import Utils.TableFuncions.PopulatedVehicleTable;
 import Utils.Forms.frameMethods;
+import Vehicle.Vehicle;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Objects;
 
 public class Main {
     public JPanel panel1;
+    public JPanel RegisterPanel;
+    public JPanel driverPanel;
+    public JPanel permissionPanel;
+    public JPanel VehiclePanel;
+    public JPanel MaintenancePanel;
     private JTabbedPane CalcPanel;
     private JTabbedPane tabbedPane2;
     private JTextField textFieldLogin;
@@ -30,11 +37,6 @@ public class Main {
     protected JList listPermissions;
     private JButton buttonAddPermission;
     private JComboBox comboBoxOwner;
-    private JPanel permissionPanel;
-    private JPanel driverPanel;
-    private JPanel VehiclePanel;
-    private JPanel MaintencePanel;
-    private JPanel RegisterPanel;
     private JTextField textFieldNome;
     private JButton buttonRemovePermission;
     private JTextField textFieldModel;
@@ -54,6 +56,12 @@ public class Main {
     private JLabel labelWelcome;
     private JTable table1;
     public Main(Owner owner) {
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        int year = calendar.get(Calendar.YEAR);
+        spinnerYear = new JSpinner(new SpinnerNumberModel(2000,1950,year,1));
+        spinnerNumberSeats = new JSpinner(new SpinnerNumberModel(5,1,60,1));
         final int idLogged = owner.getId();
         final String[] columnNames = {"ID","Modelo","Placa","Ano Fabricação","Assentos","Remover"};
         TableModel model = new DefaultTableModel(columnNames, 0);
@@ -67,96 +75,77 @@ public class Main {
         table1.getColumnModel().getColumn(0).setWidth(0);
 
         labelWelcome.setText(labelWelcome.getText()+' '+owner.getName());
-        tabbedPane2.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if(tabbedPane2.getSelectedIndex()==1){
-                    comboBoxOwner.setModel(new ownerCTR().getOwnersList());
-                    listSistemAction.setModel(new PermissionCTR().getSistemActionList());
-                }
-                if(tabbedPane2.getSelectedIndex()==2){
-                    new PopulatedVehicleTable().populate(idLogged,table1);
-                }
+        tabbedPane2.addChangeListener(e -> {
+            if(tabbedPane2.getSelectedIndex()==1){
+                comboBoxOwner.setModel(new ownerCTR().getOwnersList());
+                listSistemAction.setModel(new PermissionCTR().getSistemActionList());
+            }
+            if(tabbedPane2.getSelectedIndex()==2){
+                Vehicle listVehicle = new Vehicle();
+                listVehicle.setIdOwner(idLogged);
+                new vehicleCTR().listVehile(listVehicle,table1);
             }
         });
-        comboBoxOwner.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Owner owner = new Owner();
-                owner.setLogin(new ownerCTR().getOwnerLogin(comboBoxOwner.getSelectedItem().toString()));
-                listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner)));
+        comboBoxOwner.addActionListener(e -> {
+            Owner owner1 = new Owner();
+            owner1.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+            listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner1)));
+        });
+        buttonSalvarOwner.addActionListener(e -> {
+            Owner owner12 = new Owner();
+            owner12.setName(textFieldNome.getText());
+            owner12.setDriverLicense(textFieldCNH.getText());
+            owner12.setLogin(textFieldLogin.getText().toUpperCase());
+            owner12.setPassword(String.valueOf(passwordFieldSenha.getPassword()), new SHA256());
+            if(new ownerCTR().saveOwner(owner12)){
+                JOptionPane.showMessageDialog(null, "Condutor Salvo com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(null, "Falha ao Salvar Condutor","Error",JOptionPane.ERROR_MESSAGE);
             }
         });
-        buttonSalvarOwner.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Owner owner = new Owner();
-                owner.setName(textFieldNome.getText());
-                owner.setDriverLicense(textFieldCNH.getText());
-                owner.setLogin(textFieldLogin.getText().toUpperCase());
-                owner.setPassword(String.valueOf(passwordFieldSenha.getPassword()), new SHA256());
-                if(new ownerCTR().saveOwner(owner)){
-                    JOptionPane.showMessageDialog(null, "Condutor Salvo com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
+        buttonAddPermission.addActionListener(e -> {
+            Owner owner13 = new Owner();
+            Permission permission = new Permission();
+            permission.setAction(listSistemAction.getSelectedValue().toString());
+            permission = new PermissionCTR().getActionId(permission);
+            owner13.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+            owner13 = new ownerCTR().getOwnerId(owner13);
+            if(new PermissionCTR().existsPermission(owner13,permission)){
+                JOptionPane.showMessageDialog(null, "Esta rotina já está atribuída para o usuário selecionado","Sucesso",JOptionPane.WARNING_MESSAGE);
+            }else{
+                if(new PermissionCTR().savePermission(owner13,permission)){
+                    listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner13)));
                 }else{
-                    JOptionPane.showMessageDialog(null, "Falha ao Salvar Condutor","Error",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Falha ao Salvar Permissão","Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        buttonAddPermission.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Owner owner = new Owner();
+        buttonRemovePermission.addActionListener(e -> {
+            if(listPermissions.getSelectedIndex() == -1){
+                JOptionPane.showMessageDialog(null, "Uma permissão deve ser selecionada para remoção","Sucesso",JOptionPane.WARNING_MESSAGE);
+            }else{
+                Owner owner14 = new Owner();
                 Permission permission = new Permission();
-                permission.setAction(listSistemAction.getSelectedValue().toString());
+                permission.setAction(listPermissions.getSelectedValue().toString());
                 permission = new PermissionCTR().getActionId(permission);
-                owner.setLogin(new ownerCTR().getOwnerLogin(comboBoxOwner.getSelectedItem().toString()));
-                owner = new ownerCTR().getOwnerId(owner);
-                if(new PermissionCTR().existsPermission(owner,permission)){
-                    JOptionPane.showMessageDialog(null, "Esta rotina já está atribuída para o usuário selecionado","Sucesso",JOptionPane.WARNING_MESSAGE);
+                owner14.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+                owner14 = new ownerCTR().getOwnerId(owner14);
+                if(new PermissionCTR().deletePermission(owner14, permission)){
+                    listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner14)));
                 }else{
-                    if(new PermissionCTR().savePermission(owner,permission)){
-                        listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner)));
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Falha ao Salvar Permissão","Error",JOptionPane.ERROR_MESSAGE);
-                    }
+                    JOptionPane.showMessageDialog(null, "Falha ao Excluir Permissão","Error",JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-        buttonRemovePermission.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(listPermissions.getSelectedIndex() == -1){
-                    JOptionPane.showMessageDialog(null, "Uma permissão deve ser selecionada para remoção","Sucesso",JOptionPane.WARNING_MESSAGE);
-                }else{
-                    Owner owner = new Owner();
-                    Permission permission = new Permission();
-                    permission.setAction(listPermissions.getSelectedValue().toString());
-                    permission = new PermissionCTR().getActionId(permission);
-                    owner.setLogin(new ownerCTR().getOwnerLogin(comboBoxOwner.getSelectedItem().toString()));
-                    owner = new ownerCTR().getOwnerId(owner);
-                    if(new PermissionCTR().deletePermission(owner, permission)){
-                        listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner)));
-                    }else{
-                        JOptionPane.showMessageDialog(null, "Falha ao Excluir Permissão","Error",JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-        salvarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String[] vehilceParameters = new String[4];
-                vehilceParameters[0] = textFieldModel.getText();
-                vehilceParameters[1] = textFieldPlate.getText();
-                vehilceParameters[2] = spinnerYear.getValue().toString();
-                vehilceParameters[3] = spinnerNumberSeats.getValue().toString();
-                if(new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters)){
-                    JOptionPane.showMessageDialog(null, "Veículo Cadastrado com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
-                    new PopulatedVehicleTable().populate(idLogged,table1);
-                }else{
-                    JOptionPane.showMessageDialog(null, "Falha ao Cadastrar Veículo","Error",JOptionPane.ERROR_MESSAGE);
-                }
-            }
+        salvarButton.addActionListener(e -> {
+            String[] vehilceParameters = new String[4];
+            vehilceParameters[0] = textFieldModel.getText();
+            vehilceParameters[1] = textFieldPlate.getText();
+            vehilceParameters[2] = spinnerYear.getValue().toString();
+            vehilceParameters[3] = spinnerNumberSeats.getValue().toString();
+            Vehicle vehicleDTO = new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters);
+            new vehicleCTR().saveVehile(vehicleDTO,table1);
+            new vehicleCTR().listVehile(vehicleDTO,table1);
         });
     }
 

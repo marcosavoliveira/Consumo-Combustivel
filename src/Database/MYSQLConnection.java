@@ -24,7 +24,7 @@ public class MYSQLConnection implements ConnectDB {
             connection = DriverManager.getConnection(url, "root", "root123");
             return connection;
         } catch (SQLException e) {
-            System.out.println("Cannot connect to specified database");
+            System.err.println("Cannot connect to specified database");
             return null;
         }
     }

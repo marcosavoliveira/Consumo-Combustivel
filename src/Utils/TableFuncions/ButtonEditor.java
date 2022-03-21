@@ -1,5 +1,6 @@
 package Utils.TableFuncions;
 
+import Controller.vehicleCTR;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
@@ -40,16 +41,10 @@ public class ButtonEditor extends DefaultCellEditor
         lbl=(obj==null) ? "":obj.toString();
         clicked=true;
         if(table.getName().equals("Vehicle")) {
-            if(new PopulatedVehicleTable().deleteVehicle(table,idLogged)){
-                if(new PopulatedVehicleTable().populate(idLogged,table)){
-
-                }else{
-
-                }
-            }else{
-                JOptionPane.showMessageDialog(null, "Falha ao Remover Veículo","Error",JOptionPane.ERROR_MESSAGE);
-            }
-
+            Vehicle vehicleDTO = new Vehicle();
+            vehicleDTO.setIdOwner(idLogged);
+            vehicleDTO.setId((Integer) table.getValueAt(row, 0));
+            new vehicleCTR().deleteVehile(vehicleDTO,table);
         }
         return btn;
     }
