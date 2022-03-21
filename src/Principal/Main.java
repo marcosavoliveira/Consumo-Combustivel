@@ -1,16 +1,14 @@
 package Principal;
 
-import Controller.vehicleCTR;
 import EncryptClasses.SHA256;
 import Controller.ownerCTR;
 import User.Owner;
 import Controller.PermissionCTR;
 import User.Permission.Permission;
-import Utils.ButtonEditor;
-import Utils.ButtonRenderer;
-import Utils.PopulatedVehicleTable;
-import Utils.frameMethods;
-import Vehicle.Vehicle;
+import Utils.TableFuncions.ButtonEditor;
+import Utils.TableFuncions.ButtonRenderer;
+import Utils.TableFuncions.PopulatedVehicleTable;
+import Utils.Forms.frameMethods;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -19,7 +17,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 public class Main {
     public JPanel panel1;
@@ -73,13 +70,12 @@ public class Main {
         tabbedPane2.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
-                System.out.println(tabbedPane2.getSelectedComponent());
                 if(tabbedPane2.getSelectedIndex()==1){
                     comboBoxOwner.setModel(new ownerCTR().getOwnersList());
                     listSistemAction.setModel(new PermissionCTR().getSistemActionList());
                 }
                 if(tabbedPane2.getSelectedIndex()==2){
-                    table1.setModel(new PopulatedVehicleTable().populate(idLogged,table1));
+                    new PopulatedVehicleTable().populate(idLogged,table1);
                 }
             }
         });
@@ -149,15 +145,14 @@ public class Main {
         salvarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vehicle vehicle = new Vehicle();
-                vehicle.setIdOwner(idLogged);
-                vehicle.setModel(textFieldModel.getText());
-                vehicle.setLicensePlate(textFieldPlate.getText());
-                vehicle.setYear(Integer.parseInt(spinnerYear.getValue().toString()));
-                vehicle.setNumberSeats(Integer.parseInt(spinnerNumberSeats.getValue().toString()));
-                if(new vehicleCTR().saveVehile(vehicle)){
+                String[] vehilceParameters = new String[4];
+                vehilceParameters[0] = textFieldModel.getText();
+                vehilceParameters[1] = textFieldPlate.getText();
+                vehilceParameters[2] = spinnerYear.getValue().toString();
+                vehilceParameters[3] = spinnerNumberSeats.getValue().toString();
+                if(new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters)){
                     JOptionPane.showMessageDialog(null, "Veículo Cadastrado com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
-                    table1.setModel(new PopulatedVehicleTable().populate(idLogged,table1));
+                    new PopulatedVehicleTable().populate(idLogged,table1);
                 }else{
                     JOptionPane.showMessageDialog(null, "Falha ao Cadastrar Veículo","Error",JOptionPane.ERROR_MESSAGE);
                 }
@@ -166,7 +161,7 @@ public class Main {
     }
 
     public void setFrame(JFrame frame, Owner owner) {
-        Utils.frameMethods frameMethods = new frameMethods();
+        frameMethods frameMethods = new frameMethods();
         frameMethods.setterParamsFrame(frame);
         frameMethods.defineCloseMethod(frame);
         frame.setContentPane(new Main(owner).panel1);

@@ -3,7 +3,7 @@ package Principal;
 import Controller.LoginCTR;
 import EncryptClasses.SHA256;
 import User.Owner;
-import Utils.frameMethods;
+import Utils.Forms.frameMethods;
 
 import javax.swing.*;
 
@@ -35,7 +35,7 @@ public class Login {
 
     public static void main(String[] Args) {
         login = new JFrame(MAIN_FRAME_TITLE);
-        Utils.frameMethods frameMethods = new frameMethods();
+        frameMethods frameMethods = new frameMethods();
         frameMethods.setterParamsFrame(login);
         frameMethods.defineCloseMethod(login);
         login.setContentPane(new Login().panel1);

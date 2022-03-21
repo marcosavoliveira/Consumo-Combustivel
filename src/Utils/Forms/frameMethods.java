@@ -1,4 +1,4 @@
-package Utils;
+package Utils.Forms;
 
 import javax.swing.*;
 import java.awt.*;
