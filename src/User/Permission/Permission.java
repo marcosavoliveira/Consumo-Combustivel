@@ -1,7 +1,7 @@
 package User.Permission;
 
 public class Permission {
-    int idSistemAction;
+    int idSystemAction;
     String action;
 
     public String getAction() {
@@ -12,11 +12,11 @@ public class Permission {
         this.action = action;
     }
 
-    public int getIdSistemAction() {
-        return idSistemAction;
+    public int getIdSystemAction() {
+        return idSystemAction;
     }
 
-    public void setIdSistemAction(int idSistemAction) {
-        this.idSistemAction = idSistemAction;
+    public void setIdSystemAction(int idSystemAction) {
+        this.idSystemAction = idSystemAction;
     }
 }

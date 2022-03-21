@@ -5,15 +5,11 @@ import Vehicle.Vehicle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ButtonEditor extends DefaultCellEditor
 {
     protected JButton btn;
-    private String lbl;
     private Boolean clicked;
-    private Vehicle vehicleDTO;
     int idLogged;
     public ButtonEditor(JTextField txt, int idLogged) {
         super(txt);
@@ -22,14 +18,7 @@ public class ButtonEditor extends DefaultCellEditor
         btn.setOpaque(true);
 
         //WHEN BUTTON IS CLICKED
-        btn.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                fireEditingStopped();
-            }
-        });
+        btn.addActionListener(e -> fireEditingStopped());
     }
 
     //OVERRIDE A COUPLE OF METHODS
@@ -38,7 +27,7 @@ public class ButtonEditor extends DefaultCellEditor
                                                  boolean selected, int row, int col) {
 
         //SET TEXT TO BUTTON,SET CLICKED TO TRUE,THEN RETURN THE BTN OBJECT
-        lbl=(obj==null) ? "":obj.toString();
+
         clicked=true;
         if(table.getName().equals("Vehicle")) {
             Vehicle vehicleDTO = new Vehicle();
@@ -49,14 +38,13 @@ public class ButtonEditor extends DefaultCellEditor
         return btn;
     }
 
-    //IF BUTTON CELL VALUE CHNAGES,IF CLICKED THAT IS
+    //IF BUTTON CELL VALUE CHANGES,IF CLICKED THAT IS
     @Override
     public Object getCellEditorValue() {
 
         if(clicked)
         {
-            //SHOW US SOME MESSAGE
-
+            System.out.println("Click");
         }
         //SET IT TO FALSE NOW THAT ITS CLICKED
         clicked=false;

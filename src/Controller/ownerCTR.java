@@ -26,7 +26,7 @@ public class ownerCTR {
 
     public String getOwnerLogin(String ownerComboValue) {
         String login="";
-        if(ownerComboValue != "Selecione o condutor"){
+        if(!ownerComboValue.equals("Selecione o condutor")){
             login = ownerComboValue.substring(0,ownerComboValue.indexOf('(')-1);
         }
         return login;

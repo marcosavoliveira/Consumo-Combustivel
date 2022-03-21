@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class VehicleDAO {
@@ -30,7 +31,7 @@ public class VehicleDAO {
         }
     }
     public List<Vehicle> listVehicle(ConnectDB conDB, Vehicle vehicle) {
-        List<Vehicle> vehiclesByOwner = new ArrayList<Vehicle>();
+        List<Vehicle> vehiclesByOwner = new ArrayList<>();
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "SELECT `idvehicle`,`Model`,`licensePlate`,`year`,`numberSeats` FROM `refuel`.`vehicle` WHERE idOwner =?";
@@ -50,8 +51,8 @@ public class VehicleDAO {
             conDB.CloseConnection(con);
             return vehiclesByOwner;
         } catch (SQLException exception) {
-            System.err.println(exception.getMessage()+exception.getStackTrace());
-            return new ArrayList<Vehicle>();
+            System.err.println(exception.getMessage()+" Stack: "+Arrays.toString(exception.getStackTrace()));
+            return new ArrayList<>();
         }
     }
     public Boolean deleteVehicle(ConnectDB conDB, Vehicle vehicle) {

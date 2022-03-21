@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.Objects;
 
 public class Main {
+    Calendar calendar = new GregorianCalendar();
     public JPanel panel1;
     public JPanel RegisterPanel;
     public JPanel driverPanel;
@@ -56,12 +57,6 @@ public class Main {
     private JLabel labelWelcome;
     private JTable table1;
     public Main(Owner owner) {
-        Date date = new Date();
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        int year = calendar.get(Calendar.YEAR);
-        spinnerYear = new JSpinner(new SpinnerNumberModel(2000,1950,year,1));
-        spinnerNumberSeats = new JSpinner(new SpinnerNumberModel(5,1,60,1));
         final int idLogged = owner.getId();
         final String[] columnNames = {"ID","Modelo","Placa","Ano Fabricação","Assentos","Remover"};
         TableModel model = new DefaultTableModel(columnNames, 0);
@@ -155,5 +150,9 @@ public class Main {
         frameMethods.defineCloseMethod(frame);
         frame.setContentPane(new Main(owner).panel1);
         frame.pack();
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }

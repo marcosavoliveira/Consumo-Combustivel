@@ -3,6 +3,7 @@ package Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 public class MYSQLConnection implements ConnectDB {
     String server = "localhost:3307";
@@ -29,12 +30,11 @@ public class MYSQLConnection implements ConnectDB {
         }
     }
 
-    public boolean CloseConnection(Connection connection) {
+    public void CloseConnection(Connection connection) {
         try {
             connection.close();
-            return true;
         } catch (SQLException e) {
-            return false;
+            System.err.println(e.getMessage()+"Stack: "+ Arrays.toString(e.getStackTrace()));
         }
     }
 }

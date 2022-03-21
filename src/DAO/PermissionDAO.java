@@ -52,13 +52,13 @@ public class PermissionDAO {
     }
 
     public Boolean existsPermission(ConnectDB conDB, Owner owner, Permission permission) {
-        Boolean status = false;
+        boolean status = false;
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "SELECT count(`idpermission`) FROM `refuel`.`permission` where idowner = ? and idsistempanel = ?;";
             PreparedStatement preparedSt = con.prepareStatement(sql);
             preparedSt.setInt(1, owner.getId());
-            preparedSt.setInt(2, permission.getIdSistemAction());
+            preparedSt.setInt(2, permission.getIdSystemAction());
             ResultSet dbResponse = preparedSt.executeQuery();
             if (dbResponse.next() && dbResponse.getInt(1) > 0) {
                 status = true;
@@ -76,7 +76,7 @@ public class PermissionDAO {
                 String sql = "INSERT INTO `refuel`.`permission`(`idowner`,`idsistempanel`) VALUES (?,?);";
                 PreparedStatement preparedSt = con.prepareStatement(sql);
                 preparedSt.setInt(1, owner.getId());
-                preparedSt.setInt(2, permission.getIdSistemAction());
+                preparedSt.setInt(2, permission.getIdSystemAction());
                 preparedSt.execute();
                 preparedSt.close();
                 conDB.CloseConnection(con);
@@ -93,7 +93,7 @@ public class PermissionDAO {
             String sql = "DELETE FROM `refuel`.`permission` WHERE permission.idowner = ? and permission.idsistempanel = ?";
             PreparedStatement preparedSt = con.prepareStatement(sql);
             preparedSt.setInt(1, owner.getId());
-            preparedSt.setInt(2, permission.getIdSistemAction());
+            preparedSt.setInt(2, permission.getIdSystemAction());
             preparedSt.execute();
             conDB.CloseConnection(con);
             return true;

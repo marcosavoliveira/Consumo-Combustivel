@@ -9,7 +9,6 @@ public interface ConnectDB {
 
     String getSchema();
 
-    default boolean CloseConnection(Connection connection) {
-        return false;
+    default void CloseConnection(Connection connection) {
     }
 }

@@ -1,7 +1,6 @@
 package DAO;
 
 import Database.ConnectDB;
-import Database.MYSQLConnection;
 import User.Owner;
 
 import java.sql.*;

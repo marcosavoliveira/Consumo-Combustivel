@@ -1,7 +1,5 @@
 package Utils.TableFuncions;
 
-import Controller.vehicleCTR;
-import Utils.TableFuncions.ButtonRenderer;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
@@ -10,27 +8,15 @@ import java.util.List;
 
 public class PopulatedVehicleTable{
 
-    public Boolean populate(List<Vehicle> vehicleByOwner, JTable table1){
+    public void populate(List<Vehicle> vehicleByOwner, JTable table1){
         table1.getColumn("Remover").setCellRenderer(new ButtonRenderer());
         DefaultTableModel tableModel = (DefaultTableModel) table1.getModel();
         if(TableCleaner(tableModel) != 0){
             JOptionPane.showMessageDialog(null, "Falha ao Carregar Novos Itens","Error",JOptionPane.ERROR_MESSAGE);
-            return false;
+            return;
         }
         table1.setModel(populateVehicleTable(vehicleByOwner,table1));
-        return true;
     }
-//
-//    public Boolean deleteVehicle(JTable table, int idLogged){
-//        boolean status = false;
-//                    Vehicle vehicleDTO = new Vehicle();
-//            vehicleDTO.setId((Integer) table.getValueAt(table.getSelectedRow(), 0));
-//            if(new vehicleCTR().deleteVehile(vehicleDTO,table)){
-//                vehicleDTO.setIdOwner(idLogged);
-//                status = true;
-//            }
-//        return status;
-//    }
 
     public Vehicle saveVehicle(int idLogged, String[] parameters){
         Vehicle vehicle = new Vehicle();

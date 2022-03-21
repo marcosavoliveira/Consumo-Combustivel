@@ -1,14 +1,12 @@
 package Controller;
 
-import DAO.UserDAO;
+
 import DAO.VehicleDAO;
 import Database.MYSQLConnection;
-import User.Owner;
 import Utils.TableFuncions.PopulatedVehicleTable;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
-import java.util.List;
 
 public class vehicleCTR {
 

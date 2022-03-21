@@ -46,7 +46,7 @@ public class PermissionCTR {
 
     public Permission getActionId(Permission permission) {
         PermissionDAO permissionDAO = new PermissionDAO();
-        permission.setIdSistemAction(permissionDAO.getActionId(new MYSQLConnection(), permission));
+        permission.setIdSystemAction(permissionDAO.getActionId(new MYSQLConnection(), permission));
         return permission;
     }
 }
