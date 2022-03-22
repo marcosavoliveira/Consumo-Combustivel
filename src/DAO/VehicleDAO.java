@@ -55,6 +55,29 @@ public class VehicleDAO {
             return new ArrayList<>();
         }
     }
+
+    public boolean listIDVehicle(ConnectDB conDB, Vehicle vehicle) {
+
+        try {
+            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
+            String sql = "SELECT `idvehicle` FROM `refuel`.`vehicle` WHERE `Model`=? AND `licensePlate`=?";
+            PreparedStatement preparedSt = con.prepareStatement(sql);
+            preparedSt.setString(1, vehicle.getModel());
+            preparedSt.setString(2, vehicle.getLicensePlate());
+            ResultSet resultSet = preparedSt.executeQuery();
+            while (resultSet.next()){
+                vehicle.setId(resultSet.getInt(1));
+            }
+            preparedSt.close();
+            conDB.CloseConnection(con);
+            return true;
+        } catch (SQLException exception) {
+            System.err.println(exception.getMessage()+" Stack: "+Arrays.toString(exception.getStackTrace()));
+            vehicle.setId(-1);
+            return false;
+        }
+    }
+
     public Boolean deleteVehicle(ConnectDB conDB, Vehicle vehicle) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());

@@ -1,27 +1,27 @@
 package Principal;
 
+import Controller.MaintenanceCTR;
 import Controller.vehicleCTR;
 import EncryptClasses.SHA256;
 import Controller.ownerCTR;
 import User.Owner;
 import Controller.PermissionCTR;
 import User.Permission.Permission;
-import Utils.TableFuncions.ButtonEditor;
-import Utils.TableFuncions.ButtonRenderer;
+import Utils.TableFuncions.PopulatedMaintenanceTable;
 import Utils.TableFuncions.PopulatedVehicleTable;
 import Utils.Forms.frameMethods;
+import Vehicle.Maintenance.Maintenance;
+import Vehicle.Maintenance.MaintenanceMethods;
 import Vehicle.Vehicle;
+import Vehicle.VehicleMethods;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Main {
-    Calendar calendar = new GregorianCalendar();
     public JPanel panel1;
     public JPanel RegisterPanel;
     public JPanel driverPanel;
@@ -42,33 +42,28 @@ public class Main {
     private JButton buttonRemovePermission;
     private JTextField textFieldModel;
     private JTextField textFieldPlate;
-    private JButton salvarButton;
+    private JButton saveVehicle;
     private JSpinner spinnerNumberSeats;
-    private JComboBox comboBox1;
-    private JFormattedTextField formattedTextField1;
-    private JFormattedTextField formattedTextField2;
-    private JTextArea textArea1;
-    private JButton salvarButton1;
+    private JComboBox comboboxMaintenanceType;
+    private JFormattedTextField formattedTextFieldReturnDate;
+    private JTextArea textAreaAnnotation;
+    private JButton saveMaintenance;
     private JTextField textField4;
-    private JComboBox comboBox2;
+    private JComboBox comboBoxVehicleCalc;
     private JSpinner spinner2;
     private JButton calcularButton;
     private JSpinner spinnerYear;
     private JLabel labelWelcome;
     private JTable table1;
+    private JFormattedTextField formattedTextFieldDate;
+    private JTable tableMaintenance;
+    private JComboBox comboboxMaintenanceVehicle;
+    private JScrollPane tableVehicle;
+
     public Main(Owner owner) {
         final int idLogged = owner.getId();
-        final String[] columnNames = {"ID","Modelo","Placa","Ano Fabricação","Assentos","Remover"};
-        TableModel model = new DefaultTableModel(columnNames, 0);
-        table1.setName("Vehicle");
-        table1.setModel(model);
-        table1.getColumn("Remover").setCellRenderer(new ButtonRenderer());
-        table1.getColumn("Remover").setCellEditor(new ButtonEditor(new JTextField(),idLogged));
-        table1.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-        table1.getColumnModel().getColumn(0).setMinWidth(0);
-        table1.getColumnModel().getColumn(0).setMaxWidth(0);
-        table1.getColumnModel().getColumn(0).setWidth(0);
-
+        new VehicleMethods().setupVehicleTable(table1,idLogged);
+        new MaintenanceMethods().setupMaintenanceTable(tableMaintenance,idLogged);
         labelWelcome.setText(labelWelcome.getText()+' '+owner.getName());
         tabbedPane2.addChangeListener(e -> {
             if(tabbedPane2.getSelectedIndex()==1){
@@ -79,6 +74,12 @@ public class Main {
                 Vehicle listVehicle = new Vehicle();
                 listVehicle.setIdOwner(idLogged);
                 new vehicleCTR().listVehile(listVehicle,table1);
+            }
+            if(tabbedPane2.getSelectedIndex()==3){
+                Vehicle listVehicle = new Vehicle();
+                listVehicle.setIdOwner(idLogged);
+                new vehicleCTR().listVehileForCombo(listVehicle,comboboxMaintenanceVehicle);
+                new MaintenanceCTR().listMaintenanceType(comboboxMaintenanceType);
             }
         });
         comboBoxOwner.addActionListener(e -> {
@@ -132,7 +133,7 @@ public class Main {
                 }
             }
         });
-        salvarButton.addActionListener(e -> {
+        saveVehicle.addActionListener(e -> {
             String[] vehilceParameters = new String[4];
             vehilceParameters[0] = textFieldModel.getText();
             vehilceParameters[1] = textFieldPlate.getText();
@@ -141,6 +142,26 @@ public class Main {
             Vehicle vehicleDTO = new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters);
             new vehicleCTR().saveVehile(vehicleDTO,table1);
             new vehicleCTR().listVehile(vehicleDTO,table1);
+        });
+        saveMaintenance.addActionListener(e -> {
+            String[] maintenanceParameters = new String[4];
+
+            int idVehicle = new VehicleMethods().getIdVehicleToInsert(comboboxMaintenanceVehicle.getSelectedItem().toString());
+            int idTypeMaintenance =  new MaintenanceMethods().getMaintenanceId(comboboxMaintenanceType.getSelectedItem().toString());
+            maintenanceParameters[0] = String.valueOf(idTypeMaintenance);
+            maintenanceParameters[1] = formattedTextFieldDate.getText();
+            maintenanceParameters[2] = textAreaAnnotation.getText();
+            maintenanceParameters[3] = formattedTextFieldReturnDate.getText();
+            System.out.println("saveMaintenance"+ Arrays.toString(maintenanceParameters)+" id Vehicle"+idVehicle);
+            Maintenance MaintenanceDTO = new PopulatedMaintenanceTable().saveMaintenance(idVehicle,maintenanceParameters);
+            new MaintenanceCTR().saveMaintenance(MaintenanceDTO, tableMaintenance);
+            new MaintenanceCTR().listMaintenance(MaintenanceDTO, tableMaintenance);
+        });
+        comboboxMaintenanceVehicle.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
         });
     }
 

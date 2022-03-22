@@ -17,7 +17,9 @@ public class Login {
     Owner owner = new Owner();
     public static JFrame login;
     public Login() {
-
+        textField1.setText("marcos");
+        passwordField1.setText("123456");
+        loginButton.setRequestFocusEnabled(true);
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText().toUpperCase());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());

@@ -3,7 +3,7 @@
   <grid id="27dc6" binding="panel1" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="582" height="400"/>
+      <xy x="20" y="20" width="686" height="400"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -248,7 +248,7 @@
                           <text value="Assentos: "/>
                         </properties>
                       </component>
-                      <component id="5636a" class="javax.swing.JButton" binding="salvarButton" default-binding="true">
+                      <component id="5636a" class="javax.swing.JButton" binding="saveVehicle">
                         <constraints>
                           <grid row="6" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -268,7 +268,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <scrollpane id="3b7c3">
+                      <scrollpane id="3b7c3" binding="tableVehicle">
                         <constraints>
                           <grid row="5" column="0" row-span="1" col-span="5" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -291,7 +291,7 @@
                       </component>
                     </children>
                   </grid>
-                  <grid id="52ee" binding="MaintenancePanel" layout-manager="GridLayoutManager" row-count="4" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="52ee" binding="MaintenancePanel" layout-manager="GridLayoutManager" row-count="6" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <tabbedpane title="Manutenção"/>
@@ -301,15 +301,53 @@
                     <children>
                       <component id="3c084" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="Tipo Manutenção: "/>
                         </properties>
                       </component>
-                      <component id="f8ff4" class="javax.swing.JComboBox" binding="comboBox1" default-binding="true">
+                      <component id="f8ff4" class="javax.swing.JComboBox" binding="comboboxMaintenanceType">
                         <constraints>
-                          <grid row="0" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="617bf" class="javax.swing.JFormattedTextField" binding="formattedTextFieldReturnDate">
+                        <constraints>
+                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="65eea" class="javax.swing.JTextArea" binding="textAreaAnnotation">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="50"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="f7da7" class="javax.swing.JButton" binding="saveMaintenance">
+                        <constraints>
+                          <grid row="5" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Salvar"/>
+                        </properties>
+                      </component>
+                      <component id="4534" class="javax.swing.JLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="Veículo"/>
+                        </properties>
+                      </component>
+                      <component id="3f86f" class="javax.swing.JComboBox" binding="comboboxMaintenanceVehicle">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                       </component>
@@ -321,7 +359,7 @@
                           <text value="Descrição: "/>
                         </properties>
                       </component>
-                      <component id="7b8f1" class="javax.swing.JLabel">
+                      <component id="ab325" class="javax.swing.JLabel">
                         <constraints>
                           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -329,7 +367,7 @@
                           <text value="Data: "/>
                         </properties>
                       </component>
-                      <component id="e780d" class="javax.swing.JFormattedTextField" binding="formattedTextField1" default-binding="true">
+                      <component id="5d553" class="javax.swing.JFormattedTextField" binding="formattedTextFieldDate">
                         <constraints>
                           <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -337,38 +375,35 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="d36b2" class="javax.swing.JLabel">
+                      <component id="826c2" class="javax.swing.JLabel">
                         <constraints>
                           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Manutenção Programada: "/>
+                          <text value="Retorno"/>
                         </properties>
                       </component>
-                      <component id="617bf" class="javax.swing.JFormattedTextField" binding="formattedTextField2" default-binding="true">
+                      <component id="40c95" class="javax.swing.JLabel">
                         <constraints>
-                          <grid row="2" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="-1"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="65eea" class="javax.swing.JTextArea" binding="textArea1" default-binding="true">
-                        <constraints>
-                          <grid row="1" column="1" row-span="1" col-span="3" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                            <preferred-size width="150" height="50"/>
-                          </grid>
-                        </constraints>
-                        <properties/>
-                      </component>
-                      <component id="f7da7" class="javax.swing.JButton" binding="salvarButton1" default-binding="true">
-                        <constraints>
-                          <grid row="3" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                          <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
-                          <text value="Salvar"/>
+                          <text value="Manutenções"/>
                         </properties>
                       </component>
+                      <scrollpane id="8d2cd">
+                        <constraints>
+                          <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                        <border type="none"/>
+                        <children>
+                          <component id="e1e1" class="javax.swing.JTable" binding="tableMaintenance">
+                            <constraints/>
+                            <properties/>
+                          </component>
+                        </children>
+                      </scrollpane>
                     </children>
                   </grid>
                 </children>
@@ -407,7 +442,7 @@
                   <text value="Veículo: "/>
                 </properties>
               </component>
-              <component id="72b86" class="javax.swing.JComboBox" binding="comboBox2" default-binding="true">
+              <component id="72b86" class="javax.swing.JComboBox" binding="comboBoxVehicleCalc">
                 <constraints>
                   <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
