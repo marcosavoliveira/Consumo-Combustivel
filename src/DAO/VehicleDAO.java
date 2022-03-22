@@ -11,7 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class VehicleDAO {
-    public Boolean saveVehicle(ConnectDB conDB, Vehicle vehicle) {
+    ConnectDB conDB;
+    public VehicleDAO(ConnectDB conDB){
+        this.conDB = conDB;
+    }
+    public Boolean saveVehicle(Vehicle vehicle) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "INSERT INTO `refuel`.`vehicle`(`idOwner`,`Model`,`licensePlate`,`year`,`numberSeats`) VALUES(?,?,?,?,?);";
@@ -30,7 +34,7 @@ public class VehicleDAO {
             return false;
         }
     }
-    public List<Vehicle> listVehicle(ConnectDB conDB, Vehicle vehicle) {
+    public List<Vehicle> listVehicle(Vehicle vehicle) {
         List<Vehicle> vehiclesByOwner = new ArrayList<>();
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -56,7 +60,7 @@ public class VehicleDAO {
         }
     }
 
-    public boolean listIDVehicle(ConnectDB conDB, Vehicle vehicle) {
+    public boolean listIDVehicle(Vehicle vehicle) {
 
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -78,7 +82,7 @@ public class VehicleDAO {
         }
     }
 
-    public Boolean deleteVehicle(ConnectDB conDB, Vehicle vehicle) {
+    public Boolean deleteVehicle(Vehicle vehicle) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "DELETE FROM `refuel`.`vehicle` WHERE idVehicle =?;";

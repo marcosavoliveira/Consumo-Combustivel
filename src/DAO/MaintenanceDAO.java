@@ -2,8 +2,6 @@ package DAO;
 
 import Database.ConnectDB;
 import Vehicle.Maintenance.Maintenance;
-import Vehicle.Vehicle;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +11,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MaintenanceDAO {
-    public Boolean saveMaintenance(ConnectDB conDB, Maintenance maintenance) {
+    private ConnectDB conDB;
+    public MaintenanceDAO(ConnectDB conDB){
+        this.conDB = conDB;
+    }
+    public Boolean saveMaintenance(Maintenance maintenance) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "INSERT INTO `refuel`.`maintenance`(`idVehicle`,`idMaintenanceType`,`Date`,`Annotation`,`ReturnDate`) VALUES(?,?,?,?,?);";
@@ -32,7 +34,7 @@ public class MaintenanceDAO {
             return false;
         }
     }
-    public List<Maintenance> listMaintenance(ConnectDB conDB, Maintenance maintenance) {
+    public List<Maintenance> listMaintenance(Maintenance maintenance) {
         List<Maintenance> maintenanceByVehicle = new ArrayList<>();
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -63,7 +65,7 @@ public class MaintenanceDAO {
         }
     }
 
-        public List<String> listMaintenanceType(ConnectDB conDB) {
+        public List<String> listMaintenanceType() {
             List<String> maintenanceType = new ArrayList<>();
             try {
                 Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -83,7 +85,7 @@ public class MaintenanceDAO {
             }
     }
 
-    public boolean listIDMaintenanceType(ConnectDB conDB, Maintenance maintenance) {
+    public boolean listIDMaintenanceType(Maintenance maintenance) {
 
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -104,7 +106,7 @@ public class MaintenanceDAO {
         }
     }
 
-    public Boolean deleteMaintenance(ConnectDB conDB, Maintenance maintenance) {
+    public Boolean deleteMaintenance(Maintenance maintenance) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "DELETE FROM `refuel`.`maintenance` WHERE idMaintenance =?;";

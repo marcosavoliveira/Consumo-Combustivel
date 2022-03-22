@@ -3,11 +3,11 @@ package User;
 import EncryptClasses.EncryptMethods;
 
 public class Owner extends Person {
-    String driverLicense;
-    String login;
-    String password;
-    String name;
-    Integer id;
+    private String driverLicense;
+    private String login;
+    private String password;
+    private String name;
+    private Integer id;
 
     public String getName() {
         return name;

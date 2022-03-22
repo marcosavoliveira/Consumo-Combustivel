@@ -1,6 +1,6 @@
 package Vehicle.Maintenance;
 
-import Controller.MaintenanceCTR;
+import Controller.MaintenanceController;
 import Utils.TableFuncions.ButtonEditor;
 import Utils.TableFuncions.ButtonRenderer;
 
@@ -21,7 +21,7 @@ public class MaintenanceMethods {
     public int getMaintenanceId(String maintenanceType){
         Maintenance maintenanceDTO = new Maintenance();
         maintenanceDTO.setType(maintenanceType);
-        new MaintenanceCTR().getMaintenanceTypeId(maintenanceDTO);
+        new MaintenanceController().getMaintenanceTypeId(maintenanceDTO);
         return maintenanceDTO.getIdType();
     }
 

@@ -8,7 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDAO {
-    public Owner signInUser(ConnectDB conDB, Owner owner) {
+    private ConnectDB conDB;
+    public UserDAO(ConnectDB conDB){
+        this.conDB = conDB;
+    }
+    public Owner signInUser(Owner owner) {
         owner.setId(0);
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -30,7 +34,7 @@ public class UserDAO {
         }
     }
 
-    public List<String> listOwner(ConnectDB conDB) {
+    public List<String> listOwner() {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "select login, Name from Owner order by login";
@@ -50,7 +54,7 @@ public class UserDAO {
         }
     }
 
-    public Integer getOwnerId(ConnectDB conDB, Owner owner) {
+    public Integer getOwnerId(Owner owner) {
         int id=0;
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -69,7 +73,7 @@ public class UserDAO {
         }
     }
 
-    public Boolean saveOwner(ConnectDB conDB, Owner owner) {
+    public Boolean saveOwner(Owner owner) {
         Boolean status = true;
             try {
                 Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());

@@ -12,10 +12,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionDAO {
-    public List<String> loadPermission(ConnectDB conDB, Owner owner) {
+    private ConnectDB conDB;
+    private Connection con;
+    private String sql;
+    public PermissionDAO(ConnectDB conDB){
+        this.conDB = conDB;
+    }
+
+    public List<String> loadPermission(Owner owner) {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT idpermission,a.sistemaction FROM refuel.permission p\n" +
+            con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
+            sql = "SELECT idpermission,a.sistemaction FROM refuel.permission p\n" +
                     "join sistemaction a on a.idsistemaction = p.idsistempanel\n" +
                     "where p.idowner = ?;";
             PreparedStatement preparedSt = con.prepareStatement(sql);
@@ -33,7 +40,7 @@ public class PermissionDAO {
         }
     }
 
-    public List<String> loadSistemActions(ConnectDB conDB) {
+    public List<String> loadSistemActions() {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "SELECT sistemaction FROM refuel.sistemaction;";
@@ -51,7 +58,7 @@ public class PermissionDAO {
         }
     }
 
-    public Boolean existsPermission(ConnectDB conDB, Owner owner, Permission permission) {
+    public Boolean existsPermission(Owner owner, Permission permission) {
         boolean status = false;
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
@@ -70,7 +77,7 @@ public class PermissionDAO {
             return status;
         }
     }
-        public Boolean savePermission(ConnectDB conDB, Owner owner, Permission permission) {
+        public Boolean savePermission(Owner owner, Permission permission) {
             try {
                 Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
                 String sql = "INSERT INTO `refuel`.`permission`(`idowner`,`idsistempanel`) VALUES (?,?);";
@@ -87,7 +94,7 @@ public class PermissionDAO {
             }
     }
 
-    public Boolean deletePermission(ConnectDB conDB, Owner owner, Permission permission) {
+    public Boolean deletePermission(Owner owner, Permission permission) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "DELETE FROM `refuel`.`permission` WHERE permission.idowner = ? and permission.idsistempanel = ?";
@@ -103,7 +110,7 @@ public class PermissionDAO {
         }
     }
 
-    public int getActionId(ConnectDB conDB, Permission permission) {
+    public int getActionId(Permission permission) {
         try {
             Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
             String sql = "SELECT `idsistemaction` FROM `refuel`.`sistemaction` where sistemaction = ?;";

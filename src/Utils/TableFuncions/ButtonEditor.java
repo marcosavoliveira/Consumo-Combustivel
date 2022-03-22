@@ -1,6 +1,6 @@
 package Utils.TableFuncions;
 
-import Controller.vehicleCTR;
+import Controller.VehicleController;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class ButtonEditor extends DefaultCellEditor
             Vehicle vehicleDTO = new Vehicle();
             vehicleDTO.setIdOwner(idLogged);
             vehicleDTO.setId((Integer) table.getValueAt(row, 0));
-            new vehicleCTR().deleteVehile(vehicleDTO,table);
+            new VehicleController().deleteVehile(vehicleDTO,table);
         }
         return btn;
     }

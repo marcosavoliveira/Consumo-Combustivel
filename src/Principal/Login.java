@@ -1,6 +1,6 @@
 package Principal;
 
-import Controller.LoginCTR;
+import Controller.LoginController;
 import EncryptClasses.SHA256;
 import User.Owner;
 import Utils.Forms.frameMethods;
@@ -23,7 +23,7 @@ public class Login {
         loginButton.addActionListener(e -> {
             owner.setLogin(textField1.getText().toUpperCase());
             owner.setPassword(String.valueOf(passwordField1.getPassword()), new SHA256());
-            if (new LoginCTR().checkSignIn(owner).getId()>0) {
+            if (new LoginController().checkSignIn(owner).getId()>0) {
                 login.setVisible(false);
                 JFrame main = new JFrame(LOGIN_FRAME_TITLE);
                 Main mainFrame = new Main(owner);

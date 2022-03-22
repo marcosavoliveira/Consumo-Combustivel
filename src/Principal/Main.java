@@ -1,11 +1,11 @@
 package Principal;
 
-import Controller.MaintenanceCTR;
-import Controller.vehicleCTR;
+import Controller.MaintenanceController;
+import Controller.VehicleController;
 import EncryptClasses.SHA256;
-import Controller.ownerCTR;
+import Controller.OwnerController;
 import User.Owner;
-import Controller.PermissionCTR;
+import Controller.PermissionController;
 import User.Permission.Permission;
 import Utils.TableFuncions.PopulatedMaintenanceTable;
 import Utils.TableFuncions.PopulatedVehicleTable;
@@ -67,25 +67,25 @@ public class Main {
         labelWelcome.setText(labelWelcome.getText()+' '+owner.getName());
         tabbedPane2.addChangeListener(e -> {
             if(tabbedPane2.getSelectedIndex()==1){
-                comboBoxOwner.setModel(new ownerCTR().getOwnersList());
-                listSistemAction.setModel(new PermissionCTR().getSistemActionList());
+                comboBoxOwner.setModel(new OwnerController().getOwnersList());
+                listSistemAction.setModel(new PermissionController().getSistemActionList());
             }
             if(tabbedPane2.getSelectedIndex()==2){
                 Vehicle listVehicle = new Vehicle();
                 listVehicle.setIdOwner(idLogged);
-                new vehicleCTR().listVehile(listVehicle,table1);
+                new VehicleController().listVehile(listVehicle,table1);
             }
             if(tabbedPane2.getSelectedIndex()==3){
                 Vehicle listVehicle = new Vehicle();
                 listVehicle.setIdOwner(idLogged);
-                new vehicleCTR().listVehileForCombo(listVehicle,comboboxMaintenanceVehicle);
-                new MaintenanceCTR().listMaintenanceType(comboboxMaintenanceType);
+                new VehicleController().listVehileForCombo(listVehicle,comboboxMaintenanceVehicle);
+                new MaintenanceController().listMaintenanceType(comboboxMaintenanceType);
             }
         });
         comboBoxOwner.addActionListener(e -> {
             Owner owner1 = new Owner();
-            owner1.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
-            listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner1)));
+            owner1.setLogin(new OwnerController().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+            listPermissions.setModel(new PermissionController().getUserPermissionList(new OwnerController().getOwnerId(owner1)));
         });
         buttonSalvarOwner.addActionListener(e -> {
             Owner owner12 = new Owner();
@@ -93,7 +93,7 @@ public class Main {
             owner12.setDriverLicense(textFieldCNH.getText());
             owner12.setLogin(textFieldLogin.getText().toUpperCase());
             owner12.setPassword(String.valueOf(passwordFieldSenha.getPassword()), new SHA256());
-            if(new ownerCTR().saveOwner(owner12)){
+            if(new OwnerController().saveOwner(owner12)){
                 JOptionPane.showMessageDialog(null, "Condutor Salvo com Sucesso","Sucesso",JOptionPane.PLAIN_MESSAGE);
             }else{
                 JOptionPane.showMessageDialog(null, "Falha ao Salvar Condutor","Error",JOptionPane.ERROR_MESSAGE);
@@ -103,14 +103,14 @@ public class Main {
             Owner owner13 = new Owner();
             Permission permission = new Permission();
             permission.setAction(listSistemAction.getSelectedValue().toString());
-            permission = new PermissionCTR().getActionId(permission);
-            owner13.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
-            owner13 = new ownerCTR().getOwnerId(owner13);
-            if(new PermissionCTR().existsPermission(owner13,permission)){
+            permission = new PermissionController().getActionId(permission);
+            owner13.setLogin(new OwnerController().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+            owner13 = new OwnerController().getOwnerId(owner13);
+            if(new PermissionController().existsPermission(owner13,permission)){
                 JOptionPane.showMessageDialog(null, "Esta rotina já está atribuída para o usuário selecionado","Sucesso",JOptionPane.WARNING_MESSAGE);
             }else{
-                if(new PermissionCTR().savePermission(owner13,permission)){
-                    listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner13)));
+                if(new PermissionController().savePermission(owner13,permission)){
+                    listPermissions.setModel(new PermissionController().getUserPermissionList(new OwnerController().getOwnerId(owner13)));
                 }else{
                     JOptionPane.showMessageDialog(null, "Falha ao Salvar Permissão","Error",JOptionPane.ERROR_MESSAGE);
                 }
@@ -123,11 +123,11 @@ public class Main {
                 Owner owner14 = new Owner();
                 Permission permission = new Permission();
                 permission.setAction(listPermissions.getSelectedValue().toString());
-                permission = new PermissionCTR().getActionId(permission);
-                owner14.setLogin(new ownerCTR().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
-                owner14 = new ownerCTR().getOwnerId(owner14);
-                if(new PermissionCTR().deletePermission(owner14, permission)){
-                    listPermissions.setModel(new PermissionCTR().getUserPermissionList(new ownerCTR().getOwnerId(owner14)));
+                permission = new PermissionController().getActionId(permission);
+                owner14.setLogin(new OwnerController().getOwnerLogin(Objects.requireNonNull(comboBoxOwner.getSelectedItem()).toString()));
+                owner14 = new OwnerController().getOwnerId(owner14);
+                if(new PermissionController().deletePermission(owner14, permission)){
+                    listPermissions.setModel(new PermissionController().getUserPermissionList(new OwnerController().getOwnerId(owner14)));
                 }else{
                     JOptionPane.showMessageDialog(null, "Falha ao Excluir Permissão","Error",JOptionPane.ERROR_MESSAGE);
                 }
@@ -140,8 +140,8 @@ public class Main {
             vehilceParameters[2] = spinnerYear.getValue().toString();
             vehilceParameters[3] = spinnerNumberSeats.getValue().toString();
             Vehicle vehicleDTO = new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters);
-            new vehicleCTR().saveVehile(vehicleDTO,table1);
-            new vehicleCTR().listVehile(vehicleDTO,table1);
+            new VehicleController().saveVehile(vehicleDTO,table1);
+            new VehicleController().listVehile(vehicleDTO,table1);
         });
         saveMaintenance.addActionListener(e -> {
             String[] maintenanceParameters = new String[4];
@@ -154,8 +154,8 @@ public class Main {
             maintenanceParameters[3] = formattedTextFieldReturnDate.getText();
             System.out.println("saveMaintenance"+ Arrays.toString(maintenanceParameters)+" id Vehicle"+idVehicle);
             Maintenance MaintenanceDTO = new PopulatedMaintenanceTable().saveMaintenance(idVehicle,maintenanceParameters);
-            new MaintenanceCTR().saveMaintenance(MaintenanceDTO, tableMaintenance);
-            new MaintenanceCTR().listMaintenance(MaintenanceDTO, tableMaintenance);
+            new MaintenanceController().saveMaintenance(MaintenanceDTO, tableMaintenance);
+            new MaintenanceController().listMaintenance(MaintenanceDTO, tableMaintenance);
         });
         comboboxMaintenanceVehicle.addActionListener(new ActionListener() {
             @Override

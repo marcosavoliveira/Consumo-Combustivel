@@ -1,6 +1,6 @@
 package Vehicle;
 
-import Controller.vehicleCTR;
+import Controller.VehicleController;
 import Utils.TableFuncions.ButtonEditor;
 import Utils.TableFuncions.ButtonRenderer;
 
@@ -29,7 +29,7 @@ public class VehicleMethods {
         System.out.println("getIdVehicleToInsert: "+model+"-"+licence);
         vehicleDTO.setModel(model);
         vehicleDTO.setLicensePlate(licence);
-        new vehicleCTR().listIDVehicle(vehicleDTO);
+        new VehicleController().listIDVehicle(vehicleDTO);
         return vehicleDTO.getId();
 
     }

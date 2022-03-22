@@ -7,10 +7,9 @@ import User.Owner;
 import javax.swing.*;
 import java.util.List;
 
-public class ownerCTR {
+public class OwnerController {
     public DefaultComboBoxModel getOwnersList() {
-        UserDAO user = new UserDAO();
-        List<String> actionList=user.listOwner(new MYSQLConnection());
+        List<String> actionList=new UserDAO(new MYSQLConnection()).listOwner();
         DefaultComboBoxModel ownerComboBoxModel = new DefaultComboBoxModel();
         for (String item: actionList) {
             ownerComboBoxModel.addElement(item);
@@ -18,8 +17,7 @@ public class ownerCTR {
         return ownerComboBoxModel;
     }
     public Owner getOwnerId(Owner owner) {
-        UserDAO user = new UserDAO();
-        Integer id = user.getOwnerId(new MYSQLConnection(), owner);
+        Integer id = new UserDAO(new MYSQLConnection()).getOwnerId(owner);
         owner.setId(id);
         return owner;
     }
@@ -33,7 +31,6 @@ public class ownerCTR {
     }
 
     public Boolean saveOwner(Owner owner) {
-        UserDAO user = new UserDAO();
-        return user.saveOwner(new MYSQLConnection(), owner);
+        return new UserDAO(new MYSQLConnection()).saveOwner(owner);
     }
 }
