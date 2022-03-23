@@ -20,8 +20,8 @@ public class PermissionController {
     }
 
     public DefaultListModel getSystemActionList() {
-        PermissionDAO sistemActions = new PermissionDAO(new MYSQLConnection());
-        List<String> actionList=sistemActions.loadSystemActions();
+        PermissionDAO systemActions = new PermissionDAO(new MYSQLConnection());
+        List<String> actionList=systemActions.loadSystemActions();
         DefaultListModel actionListModel = new DefaultListModel();
         for (String item: actionList) {
             actionListModel.addElement(item);

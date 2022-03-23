@@ -6,15 +6,13 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class MYSQLConnection implements ConnectDB {
-    private String server = "localhost:3307";
-    private String schema = "refuel";
 
     public String getServer() {
-        return server;
+        return "localhost:3307";
     }
 
     public String getSchema() {
-        return schema;
+        return "refuel";
     }
 
     public java.sql.Connection getConnection(String serverName, String database) {

@@ -2,7 +2,6 @@ package Utils.TableFuncions;
 
 import Controller.MaintenanceController;
 import Controller.VehicleController;
-import DAO.MaintenanceDAO;
 import Vehicle.Maintenance.Maintenance;
 import Vehicle.Vehicle;
 
@@ -36,7 +35,7 @@ public class ButtonEditor extends DefaultCellEditor
             Vehicle vehicleDTO = new Vehicle();
             vehicleDTO.setIdOwner(idLogged);
             vehicleDTO.setId((Integer) table.getValueAt(row, 0));
-            new VehicleController().deleteVehile(vehicleDTO,table);
+            new VehicleController().deleteVehicle(vehicleDTO,table);
         }
         if(table.getName().equals("Maintenance")) {
             Maintenance maintenanceDTO = new Maintenance();

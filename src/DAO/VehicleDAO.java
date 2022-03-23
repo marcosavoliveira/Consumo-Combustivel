@@ -44,7 +44,6 @@ public class VehicleDAO {
         List<Vehicle> vehiclesByOwner = new ArrayList<>();
         try {
             sql = "SELECT `idVehicle`,`Model`,`licensePlate`,`year`,`numberSeats` FROM `refuel`.`vehicle` WHERE idOwner =?";
-            System.out.println("listVehicle: "+sql+vehicle.getIdOwner());
             PreparedStatement preparedStatement = setupConnection(sql);
             preparedStatement.setInt(1, vehicle.getIdOwner());
             ResultSet resultSet = preparedStatement.executeQuery();

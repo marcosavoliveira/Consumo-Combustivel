@@ -1,8 +1,6 @@
 package Utils.TableFuncions;
 
-import Principal.Main;
 import Vehicle.Maintenance.Maintenance;
-import Vehicle.Vehicle;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -23,7 +21,7 @@ public class PopulatedMaintenanceTable {
     public Maintenance saveMaintenance(int idVehicle, String[] parameters){
         Maintenance maintenance = new Maintenance();
         maintenance.setIdVehicle(idVehicle);
-        maintenance.setIdType(Integer.valueOf(parameters[0]));
+        maintenance.setIdType(Integer.parseInt(parameters[0]));
         maintenance.setMaintenanceDate(parameters[1]);
         maintenance.setAnnotation(parameters[2]);
         maintenance.setDateReturn(parameters[3]);

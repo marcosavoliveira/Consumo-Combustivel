@@ -1,12 +1,10 @@
 package Controller;
 
 import DAO.MaintenanceDAO;
-import DAO.VehicleDAO;
 import Database.MYSQLConnection;
 import Utils.TableFuncions.PopulatedMaintenanceTable;
 import Vehicle.Maintenance.Maintenance;
 import Vehicle.Maintenance.MaintenanceMethods;
-import Vehicle.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
@@ -34,9 +32,7 @@ public class MaintenanceController {
     }
 
     public void getMaintenanceTypeId(Maintenance maintenance) {
-        if(new MaintenanceDAO(new MYSQLConnection()).listIDMaintenanceType(maintenance)){
-            System.out.println("getMaintenanceTypeId"+ maintenance.getIdType());
-        }else{
+        if(!new MaintenanceDAO(new MYSQLConnection()).listIDMaintenanceType(maintenance)){
             JOptionPane.showMessageDialog(null, "Falha ao Retornar ID do Veículo","Error",JOptionPane.ERROR_MESSAGE);
         }
     }

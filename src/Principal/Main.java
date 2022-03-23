@@ -19,7 +19,6 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class Main {
@@ -76,12 +75,12 @@ public class Main {
             if(tabbedPane2.getSelectedIndex()==2){
                 Vehicle listVehicle = new Vehicle();
                 listVehicle.setIdOwner(idLogged);
-                new VehicleController().listVehile(listVehicle,table1);
+                new VehicleController().listVehicle(listVehicle,table1);
             }
             if(tabbedPane2.getSelectedIndex()==3){
                 Vehicle listVehicle = new Vehicle();
                 listVehicle.setIdOwner(idLogged);
-                new VehicleController().listVehileForCombo(listVehicle,comboboxMaintenanceVehicle);
+                new VehicleController().listVehicleForCombo(listVehicle,comboboxMaintenanceVehicle);
                 new MaintenanceController().listMaintenanceType(comboboxMaintenanceType);
             }
         });
@@ -143,8 +142,8 @@ public class Main {
             vehilceParameters[2] = spinnerYear.getValue().toString();
             vehilceParameters[3] = spinnerNumberSeats.getValue().toString();
             Vehicle vehicleDTO = new PopulatedVehicleTable().saveVehicle(idLogged,vehilceParameters);
-            new VehicleController().saveVehile(vehicleDTO,table1);
-            new VehicleController().listVehile(vehicleDTO,table1);
+            new VehicleController().saveVehicle(vehicleDTO,table1);
+            new VehicleController().listVehicle(vehicleDTO,table1);
         });
         saveMaintenance.addActionListener(e -> {
             if(comboboxMaintenanceVehicle.getSelectedIndex()>0){
@@ -156,7 +155,6 @@ public class Main {
             maintenanceParameters[3] = formattedTextFieldReturnDate.getText();
             maintenanceParameters[4] = comboboxMaintenanceVehicle.getSelectedItem().toString();
             int idVehicle = new VehicleMethods().getIdVehicleToInsert(maintenanceParameters[4]);
-            System.out.println("saveMaintenance"+ Arrays.toString(maintenanceParameters)+" id Vehicle"+idVehicle);
             Maintenance MaintenanceDTO = new PopulatedMaintenanceTable().saveMaintenance(idVehicle,maintenanceParameters);
             new MaintenanceController().saveMaintenance(MaintenanceDTO, tableMaintenance);
             new MaintenanceController().listMaintenance(MaintenanceDTO, tableMaintenance);

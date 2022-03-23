@@ -26,7 +26,6 @@ public class VehicleMethods {
         Vehicle vehicleDTO = new Vehicle();
         String model = comboBoxVehicle.substring(0,comboBoxVehicle.indexOf('-')-1);
         String licence = comboBoxVehicle.substring(comboBoxVehicle.indexOf('-')+2);
-        System.out.println("getIdVehicleToInsert: "+model+"-"+licence);
         vehicleDTO.setModel(model);
         vehicleDTO.setLicensePlate(licence);
         new VehicleController().listIDVehicle(vehicleDTO);
