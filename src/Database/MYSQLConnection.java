@@ -6,8 +6,8 @@ import java.sql.SQLException;
 import java.util.Arrays;
 
 public class MYSQLConnection implements ConnectDB {
-    String server = "localhost:3307";
-    String schema = "refuel";
+    private String server = "localhost:3307";
+    private String schema = "refuel";
 
     public String getServer() {
         return server;

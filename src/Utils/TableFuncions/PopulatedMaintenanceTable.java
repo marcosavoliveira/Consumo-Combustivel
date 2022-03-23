@@ -27,6 +27,7 @@ public class PopulatedMaintenanceTable {
         maintenance.setMaintenanceDate(parameters[1]);
         maintenance.setAnnotation(parameters[2]);
         maintenance.setDateReturn(parameters[3]);
+        maintenance.setVehiclePlate(parameters[4]);
         return maintenance;
     }
     private DefaultTableModel populateMaintenanceTable(List<Maintenance> vehicleMaintenances, JTable table){
@@ -34,6 +35,7 @@ public class PopulatedMaintenanceTable {
         if(vehicleMaintenances.size()>0 ){
             for(Maintenance item:vehicleMaintenances){
                 tableModel.addRow(new Object[]{item.getId(),
+                                                item.getIdVehicle(),
                                                 item.getVehiclePlate(),
                                                 item.getType(),
                                                 item.getMaintenanceDate(),

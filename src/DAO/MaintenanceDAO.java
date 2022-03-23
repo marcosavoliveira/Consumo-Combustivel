@@ -58,6 +58,7 @@ public class MaintenanceDAO {
                 item.setMaintenanceDate(resultSet.getString(4));
                 item.setDateReturn(resultSet.getString(5));
                 item.setVehiclePlate(resultSet.getString(6));
+                item.setIdVehicle(maintenance.getIdVehicle());
                 maintenanceByVehicle.add(item);
             }
             conDB.CloseConnection(preparedStatement.getConnection());

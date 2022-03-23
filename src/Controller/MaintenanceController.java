@@ -1,10 +1,12 @@
 package Controller;
 
 import DAO.MaintenanceDAO;
+import DAO.VehicleDAO;
 import Database.MYSQLConnection;
 import Utils.TableFuncions.PopulatedMaintenanceTable;
 import Vehicle.Maintenance.Maintenance;
 import Vehicle.Maintenance.MaintenanceMethods;
+import Vehicle.Vehicle;
 
 import javax.swing.*;
 import java.util.List;
@@ -36,6 +38,14 @@ public class MaintenanceController {
             System.out.println("getMaintenanceTypeId"+ maintenance.getIdType());
         }else{
             JOptionPane.showMessageDialog(null, "Falha ao Retornar ID do Veículo","Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void deleteMaintenance(Maintenance maintenanceDTO, JTable maintenanceTable) {
+        if(new MaintenanceDAO(new MYSQLConnection()).deleteMaintenance(maintenanceDTO)){
+            listMaintenance(maintenanceDTO,maintenanceTable);
+        }else{
+            JOptionPane.showMessageDialog(null, "Falha ao Remover Registro de Manutenção","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
 }

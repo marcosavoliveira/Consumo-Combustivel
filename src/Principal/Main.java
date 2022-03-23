@@ -18,6 +18,7 @@ import Vehicle.VehicleMethods;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -146,23 +147,33 @@ public class Main {
             new VehicleController().listVehile(vehicleDTO,table1);
         });
         saveMaintenance.addActionListener(e -> {
-            String[] maintenanceParameters = new String[4];
-
-            int idVehicle = new VehicleMethods().getIdVehicleToInsert(comboboxMaintenanceVehicle.getSelectedItem().toString());
+            if(comboboxMaintenanceVehicle.getSelectedIndex()>0){
+            String[] maintenanceParameters = new String[5];
             int idTypeMaintenance = new MaintenanceMethods().getMaintenanceId(comboboxMaintenanceType.getSelectedItem().toString());
             maintenanceParameters[0] = String.valueOf(idTypeMaintenance);
             maintenanceParameters[1] = formattedTextFieldDate.getText();
             maintenanceParameters[2] = textAreaAnnotation.getText();
             maintenanceParameters[3] = formattedTextFieldReturnDate.getText();
+            maintenanceParameters[4] = comboboxMaintenanceVehicle.getSelectedItem().toString();
+            int idVehicle = new VehicleMethods().getIdVehicleToInsert(maintenanceParameters[4]);
             System.out.println("saveMaintenance"+ Arrays.toString(maintenanceParameters)+" id Vehicle"+idVehicle);
             Maintenance MaintenanceDTO = new PopulatedMaintenanceTable().saveMaintenance(idVehicle,maintenanceParameters);
             new MaintenanceController().saveMaintenance(MaintenanceDTO, tableMaintenance);
             new MaintenanceController().listMaintenance(MaintenanceDTO, tableMaintenance);
+            }else{
+                JOptionPane.showMessageDialog(null, "Selecione um veículo.","Alerta",JOptionPane.WARNING_MESSAGE);
+            }
         });
         comboboxMaintenanceVehicle.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                if(comboboxMaintenanceVehicle.getSelectedIndex()>0){
+                    Maintenance maintenance = new Maintenance();
+                    maintenance.setIdVehicle(new VehicleMethods().getIdVehicleToInsert(comboboxMaintenanceVehicle.getSelectedItem().toString()));
+                    new MaintenanceController().listMaintenance(maintenance,tableMaintenance);
+                }else{
+                    new PopulatedMaintenanceTable().populate(new ArrayList<>(),tableMaintenance);
+                }
             }
         });
     }

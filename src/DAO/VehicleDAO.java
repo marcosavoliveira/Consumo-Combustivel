@@ -65,7 +65,7 @@ public class VehicleDAO {
         }
     }
 
-    public boolean listIDVehicle(Vehicle vehicle) {
+    public boolean getIDVehicle(Vehicle vehicle) {
 
         try {
             sql = "SELECT `idVehicle` FROM `refuel`.`vehicle` WHERE `Model`=? AND `licensePlate`=?";

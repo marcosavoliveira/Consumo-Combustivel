@@ -27,7 +27,7 @@ public class MaintenanceMethods {
     }
 
     public void setupMaintenanceTable(JTable tableMaintenance, int idLogged) {
-        final String[] columnNames = {"ID","Veículo","Tipo Manutenção","Data","Retorno","Observações","Remover"};
+        final String[] columnNames = {"ID","IDVehicle","Veículo","Tipo Manutenção","Data","Retorno","Observações","Remover"};
         TableModel model = new DefaultTableModel(columnNames, 0);
         tableMaintenance.setName("Maintenance");
         tableMaintenance.setModel(model);
@@ -37,6 +37,9 @@ public class MaintenanceMethods {
         tableMaintenance.getColumnModel().getColumn(0).setMinWidth(0);
         tableMaintenance.getColumnModel().getColumn(0).setMaxWidth(0);
         tableMaintenance.getColumnModel().getColumn(0).setWidth(0);
+        tableMaintenance.getColumnModel().getColumn(1).setMinWidth(0);
+        tableMaintenance.getColumnModel().getColumn(1).setMaxWidth(0);
+        tableMaintenance.getColumnModel().getColumn(1).setWidth(0);
     }
 }
 

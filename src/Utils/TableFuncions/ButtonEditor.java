@@ -1,6 +1,9 @@
 package Utils.TableFuncions;
 
+import Controller.MaintenanceController;
 import Controller.VehicleController;
+import DAO.MaintenanceDAO;
+import Vehicle.Maintenance.Maintenance;
 import Vehicle.Vehicle;
 
 import javax.swing.*;
@@ -34,6 +37,12 @@ public class ButtonEditor extends DefaultCellEditor
             vehicleDTO.setIdOwner(idLogged);
             vehicleDTO.setId((Integer) table.getValueAt(row, 0));
             new VehicleController().deleteVehile(vehicleDTO,table);
+        }
+        if(table.getName().equals("Maintenance")) {
+            Maintenance maintenanceDTO = new Maintenance();
+            maintenanceDTO.setId((Integer) table.getValueAt(row, 0));
+            maintenanceDTO.setIdVehicle((Integer) table.getValueAt(row, 1));
+            new MaintenanceController().deleteMaintenance(maintenanceDTO,table);
         }
         return btn;
     }

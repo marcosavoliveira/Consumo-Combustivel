@@ -29,7 +29,6 @@ public class VehicleController {
     }
     public void deleteVehile(Vehicle vehicleDTO,JTable vehicleTable) {
 
-        System.out.println(vehicleDTO.getIdOwner()+" CTR DELETE");
         if(new VehicleDAO(new MYSQLConnection()).deleteVehicle(vehicleDTO)){
             listVehile(vehicleDTO,vehicleTable);
         }else{
@@ -37,9 +36,7 @@ public class VehicleController {
         }
     }
     public void listIDVehicle(Vehicle vehicleDTO){
-        if(new VehicleDAO(new MYSQLConnection()).listIDVehicle(vehicleDTO)){
-            System.out.println("listIDVehicle"+ vehicleDTO.getId());
-        }else{
+        if(!new VehicleDAO(new MYSQLConnection()).getIDVehicle(vehicleDTO)){
             JOptionPane.showMessageDialog(null, "Falha ao Retornar ID do Veículo","Error",JOptionPane.ERROR_MESSAGE);
         }
     }
