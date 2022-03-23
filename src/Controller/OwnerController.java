@@ -11,6 +11,7 @@ public class OwnerController {
     public DefaultComboBoxModel getOwnersList() {
         List<String> actionList=new UserDAO(new MYSQLConnection()).listOwner();
         DefaultComboBoxModel ownerComboBoxModel = new DefaultComboBoxModel();
+        ownerComboBoxModel.addElement("Selecione o condutor");
         for (String item: actionList) {
             ownerComboBoxModel.addElement(item);
         }

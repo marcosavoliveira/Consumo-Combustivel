@@ -68,7 +68,9 @@ public class Main {
         tabbedPane2.addChangeListener(e -> {
             if(tabbedPane2.getSelectedIndex()==1){
                 comboBoxOwner.setModel(new OwnerController().getOwnersList());
-                listSistemAction.setModel(new PermissionController().getSistemActionList());
+                if(comboBoxOwner.getSelectedIndex()>0){
+                    listSistemAction.setModel(new PermissionController().getSystemActionList());
+                }
             }
             if(tabbedPane2.getSelectedIndex()==2){
                 Vehicle listVehicle = new Vehicle();
@@ -147,7 +149,7 @@ public class Main {
             String[] maintenanceParameters = new String[4];
 
             int idVehicle = new VehicleMethods().getIdVehicleToInsert(comboboxMaintenanceVehicle.getSelectedItem().toString());
-            int idTypeMaintenance =  new MaintenanceMethods().getMaintenanceId(comboboxMaintenanceType.getSelectedItem().toString());
+            int idTypeMaintenance = new MaintenanceMethods().getMaintenanceId(comboboxMaintenanceType.getSelectedItem().toString());
             maintenanceParameters[0] = String.valueOf(idTypeMaintenance);
             maintenanceParameters[1] = formattedTextFieldDate.getText();
             maintenanceParameters[2] = textAreaAnnotation.getText();

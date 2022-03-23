@@ -1,8 +1,8 @@
 package User.Permission;
 
 public class Permission {
-    int idSystemAction;
-    String action;
+    private int idSystemAction;
+    private String action;
 
     public String getAction() {
         return action;

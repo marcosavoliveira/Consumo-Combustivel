@@ -1,5 +1,5 @@
 package User;
 
 public class Person {
-    double weight;
+    private double weight;
 }

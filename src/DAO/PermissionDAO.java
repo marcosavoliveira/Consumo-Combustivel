@@ -12,27 +12,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PermissionDAO {
-    private ConnectDB conDB;
-    private Connection con;
+    private final ConnectDB conDB;
     private String sql;
+
     public PermissionDAO(ConnectDB conDB){
         this.conDB = conDB;
     }
 
+    private PreparedStatement setupConnection (String sql) throws SQLException {
+        Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
+        return con.prepareStatement(sql);
+    }
+
     public List<String> loadPermission(Owner owner) {
         try {
-            con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            sql = "SELECT idpermission,a.sistemaction FROM refuel.permission p\n" +
-                    "join sistemaction a on a.idsistemaction = p.idsistempanel\n" +
-                    "where p.idowner = ?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
+            sql = "SELECT idPermission,a.systemAction FROM refuel.permission p\n" +
+                    "join systemAction a on a.idSystemAction = p.idSystemPanel\n" +
+                    "where p.idOwner = ?;";
+            PreparedStatement preparedSt = setupConnection(sql);
             preparedSt.setInt(1, owner.getId());
             ResultSet dbResponse = preparedSt.executeQuery();
             List<String> userPermission = new ArrayList<>();
             while (dbResponse.next()) {
                 userPermission.add(dbResponse.getString(2));
             }
-            conDB.CloseConnection(con);
+            conDB.CloseConnection(preparedSt.getConnection());
             return userPermission;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
@@ -40,18 +44,17 @@ public class PermissionDAO {
         }
     }
 
-    public List<String> loadSistemActions() {
+    public List<String> loadSystemActions() {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT sistemaction FROM refuel.sistemaction;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
+            sql = "ELECT systemAction FROM refuel.systemAction;";
+            PreparedStatement preparedSt = setupConnection(sql);
             ResultSet dbResponse = preparedSt.executeQuery();
-            List<String> sistemActions = new ArrayList<>();
+            List<String> systemActions = new ArrayList<>();
             while (dbResponse.next()) {
-                sistemActions.add(dbResponse.getString(1));
+                systemActions.add(dbResponse.getString(1));
             }
-            conDB.CloseConnection(con);
-            return sistemActions;
+            conDB.CloseConnection(preparedSt.getConnection());
+            return systemActions;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
             return new ArrayList<>();
@@ -61,48 +64,45 @@ public class PermissionDAO {
     public Boolean existsPermission(Owner owner, Permission permission) {
         boolean status = false;
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT count(`idpermission`) FROM `refuel`.`permission` where idowner = ? and idsistempanel = ?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
+            sql = "SELECT count(`idPermission`) FROM `refuel`.`permission` where idOwner = ? and idSystemPanel = ?;";
+            PreparedStatement preparedSt = setupConnection(sql);
             preparedSt.setInt(1, owner.getId());
             preparedSt.setInt(2, permission.getIdSystemAction());
             ResultSet dbResponse = preparedSt.executeQuery();
             if (dbResponse.next() && dbResponse.getInt(1) > 0) {
                 status = true;
             }
-            conDB.CloseConnection(con);
+            conDB.CloseConnection(preparedSt.getConnection());
             return status;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
             return status;
         }
     }
-        public Boolean savePermission(Owner owner, Permission permission) {
-            try {
-                Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-                String sql = "INSERT INTO `refuel`.`permission`(`idowner`,`idsistempanel`) VALUES (?,?);";
-                PreparedStatement preparedSt = con.prepareStatement(sql);
-                preparedSt.setInt(1, owner.getId());
-                preparedSt.setInt(2, permission.getIdSystemAction());
-                preparedSt.execute();
-                preparedSt.close();
-                conDB.CloseConnection(con);
-                return true;
-            } catch (SQLException exception) {
-                System.err.println(exception.getMessage());
-                return false;
-            }
+
+    public Boolean savePermission(Owner owner, Permission permission) {
+        try {
+            sql = "INSERT INTO `refuel`.`permission`(`idOwner`,`idSystemPanel`) VALUES (?,?);";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setInt(1, owner.getId());
+            preparedStatement.setInt(2, permission.getIdSystemAction());
+            preparedStatement.execute();
+            conDB.CloseConnection(preparedStatement.getConnection());
+            return true;
+        } catch (SQLException exception) {
+            System.err.println(exception.getMessage());
+            return false;
+        }
     }
 
     public Boolean deletePermission(Owner owner, Permission permission) {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "DELETE FROM `refuel`.`permission` WHERE permission.idowner = ? and permission.idsistempanel = ?";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setInt(1, owner.getId());
-            preparedSt.setInt(2, permission.getIdSystemAction());
-            preparedSt.execute();
-            conDB.CloseConnection(con);
+            sql = "DELETE FROM `refuel`.`permission` WHERE permission.idOwner = ? and permission.idSystemPanel = ?";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setInt(1, owner.getId());
+            preparedStatement.setInt(2, permission.getIdSystemAction());
+            preparedStatement.execute();
+            conDB.CloseConnection(preparedStatement.getConnection());
             return true;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
@@ -112,15 +112,14 @@ public class PermissionDAO {
 
     public int getActionId(Permission permission) {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT `idsistemaction` FROM `refuel`.`sistemaction` where sistemaction = ?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setString(1, permission.getAction());
-            ResultSet dbResponse = preparedSt.executeQuery();
+            sql = "SELECT `idSystemAction` FROM `refuel`.`systemAction` where systemAction = ?;";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setString(1, permission.getAction());
+            ResultSet dbResponse = preparedStatement.executeQuery();
             if (dbResponse.next()) {
                 return dbResponse.getInt(1);
             }
-            conDB.CloseConnection(con);
+            conDB.CloseConnection(preparedStatement.getConnection());
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
             return 0;

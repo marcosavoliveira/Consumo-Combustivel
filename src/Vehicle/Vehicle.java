@@ -2,12 +2,12 @@ package Vehicle;
 
 public class Vehicle {
 
-    String licensePlate;
-    String model;
-    int year;
-    int numberSeats;
-    int id;
-    int idOwner;
+    private String licensePlate;
+    private String model;
+    private int year;
+    private int numberSeats;
+    private int id;
+    private int idOwner;
 
     public int getIdOwner() {
         return idOwner;

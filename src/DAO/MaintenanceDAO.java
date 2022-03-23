@@ -11,23 +11,28 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MaintenanceDAO {
-    private ConnectDB conDB;
+    private final ConnectDB conDB;
+    private String sql;
+
     public MaintenanceDAO(ConnectDB conDB){
         this.conDB = conDB;
     }
+
+    private PreparedStatement setupConnection (String sql) throws SQLException {
+        Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
+        return con.prepareStatement(sql);
+    }
     public Boolean saveMaintenance(Maintenance maintenance) {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "INSERT INTO `refuel`.`maintenance`(`idVehicle`,`idMaintenanceType`,`Date`,`Annotation`,`ReturnDate`) VALUES(?,?,?,?,?);";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setInt(1, maintenance.getIdVehicle());
-            preparedSt.setInt(2, maintenance.getIdType());
-            preparedSt.setString(3, maintenance.getMaintenanceDate());
-            preparedSt.setString(4, maintenance.getAnnotation());
-            preparedSt.setString(5, maintenance.getDateReturn());
-            preparedSt.execute();
-            preparedSt.close();
-            conDB.CloseConnection(con);
+            sql = "INSERT INTO `refuel`.`maintenance`(`idVehicle`,`idMaintenanceType`,`Date`,`Annotation`,`ReturnDate`) VALUES(?,?,?,?,?);";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setInt(1, maintenance.getIdVehicle());
+            preparedStatement.setInt(2, maintenance.getIdType());
+            preparedStatement.setString(3, maintenance.getMaintenanceDate());
+            preparedStatement.setString(4, maintenance.getAnnotation());
+            preparedStatement.setString(5, maintenance.getDateReturn());
+            preparedStatement.execute();
+            conDB.CloseConnection(preparedStatement.getConnection());
             return true;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());
@@ -37,15 +42,14 @@ public class MaintenanceDAO {
     public List<Maintenance> listMaintenance(Maintenance maintenance) {
         List<Maintenance> maintenanceByVehicle = new ArrayList<>();
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT `idMaintenance`,`maintenanceType`.`Type`,`Annotation`,`Date`,`ReturnDate`,concat(`vehicle`.`Model`,' - ',`vehicle`.`licensePlate`) as Vehicle\n" +
+            sql = "SELECT `idMaintenance`,`maintenanceType`.`Type`,`Annotation`,`Date`,`ReturnDate`,concat(`vehicle`.`Model`,' - ',`vehicle`.`licensePlate`) as Vehicle\n" +
                     "FROM `refuel`.`maintenance` \n" +
                     "JOIN `refuel`.`maintenanceType` on `maintenanceType`.`idMaintenanceType` = `maintenance`.`idMaintenanceType`\n" +
-                    "JOIN `refuel`.`vehicle` ON `vehicle`.`idvehicle` = `maintenance`.`IdVehicle`\n" +
+                    "JOIN `refuel`.`vehicle` ON `vehicle`.`idVehicle` = `maintenance`.`IdVehicle`\n" +
                     "Where `maintenance`.idVehicle = ?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setInt(1, maintenance.getIdVehicle());
-            ResultSet resultSet = preparedSt.executeQuery();
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setInt(1, maintenance.getIdVehicle());
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 Maintenance item = new Maintenance();
                 item.setId(resultSet.getInt(1));
@@ -56,8 +60,7 @@ public class MaintenanceDAO {
                 item.setVehiclePlate(resultSet.getString(6));
                 maintenanceByVehicle.add(item);
             }
-            preparedSt.close();
-            conDB.CloseConnection(con);
+            conDB.CloseConnection(preparedStatement.getConnection());
             return maintenanceByVehicle;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage()+" Stack: "+ Arrays.toString(exception.getStackTrace()));
@@ -66,18 +69,17 @@ public class MaintenanceDAO {
     }
 
         public List<String> listMaintenanceType() {
+
             List<String> maintenanceType = new ArrayList<>();
             try {
-                Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-                String sql = "SELECT `idMaintenanceType`,`Type` FROM `refuel`.`maintenanceType`;";
-                PreparedStatement preparedSt = con.prepareStatement(sql);
-                ResultSet resultSet = preparedSt.executeQuery();
-                maintenanceType.add("Tipo");
+
+                sql = "SELECT `idMaintenanceType`,`Type` FROM `refuel`.`maintenanceType`;";
+                PreparedStatement preparedStatement = setupConnection(sql);
+                ResultSet resultSet = preparedStatement.executeQuery();
                 while (resultSet.next()){
                     maintenanceType.add(resultSet.getString(2));
                 }
-                preparedSt.close();
-                conDB.CloseConnection(con);
+                conDB.CloseConnection(preparedStatement.getConnection());
                 return maintenanceType;
             } catch (SQLException exception) {
                 System.err.println(exception.getMessage()+" Stack: "+ Arrays.toString(exception.getStackTrace()));
@@ -88,16 +90,14 @@ public class MaintenanceDAO {
     public boolean listIDMaintenanceType(Maintenance maintenance) {
 
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "SELECT `idMaintenanceType`,`Type` FROM `refuel`.`maintenanceType` where `Type` =?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setString(1, maintenance.getType());
-            ResultSet resultSet = preparedSt.executeQuery();
+            sql = "SELECT `idMaintenanceType`,`Type` FROM `refuel`.`maintenanceType` where `Type` =?;";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setString(1, maintenance.getType());
+            ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
                 maintenance.setIdType(resultSet.getInt(1));
             }
-            preparedSt.close();
-            conDB.CloseConnection(con);
+            conDB.CloseConnection(preparedStatement.getConnection());
             return true;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage()+" Stack: "+Arrays.toString(exception.getStackTrace()));
@@ -108,13 +108,11 @@ public class MaintenanceDAO {
 
     public Boolean deleteMaintenance(Maintenance maintenance) {
         try {
-            Connection con = conDB.getConnection(conDB.getServer(), conDB.getSchema());
-            String sql = "DELETE FROM `refuel`.`maintenance` WHERE idMaintenance =?;";
-            PreparedStatement preparedSt = con.prepareStatement(sql);
-            preparedSt.setInt(1, maintenance.getId());
-            preparedSt.execute();
-            preparedSt.close();
-            conDB.CloseConnection(con);
+            sql = "DELETE FROM `refuel`.`maintenance` WHERE idMaintenance =?;";
+            PreparedStatement preparedStatement = setupConnection(sql);
+            preparedStatement.setInt(1, maintenance.getId());
+            preparedStatement.execute();
+            conDB.CloseConnection(preparedStatement.getConnection());
             return true;
         } catch (SQLException exception) {
             System.err.println(exception.getMessage());

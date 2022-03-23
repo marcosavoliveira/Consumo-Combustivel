@@ -1,14 +1,14 @@
 package Vehicle.Maintenance;
 
 public class Maintenance {
-    String maintenanceDate;
-    String type;
-    String dateReturn;
-    String annotation;
-    String vehiclePlate;
-    int id;
-    int idVehicle;
-    int idType;
+    private String maintenanceDate;
+    private String type;
+    private String dateReturn;
+    private String annotation;
+    private String vehiclePlate;
+    private int id;
+    private int idVehicle;
+    private int idType;
 
     public String getVehiclePlate() {
         return vehiclePlate;

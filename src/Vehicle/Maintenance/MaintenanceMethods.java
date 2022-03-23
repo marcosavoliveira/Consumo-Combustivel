@@ -13,6 +13,7 @@ public class MaintenanceMethods {
 
     public DefaultComboBoxModel getMaintenanceType(List<String> maintenanceType){
         DefaultComboBoxModel defaultComboBoxModel = new DefaultComboBoxModel();
+        defaultComboBoxModel.addElement("Tipo");
         for (String item : maintenanceType){
             defaultComboBoxModel.addElement(item);
         }
